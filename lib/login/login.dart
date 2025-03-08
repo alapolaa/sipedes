@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:sipedes/data/extension/extension.dart';
 import 'package:sipedes/data/theme/theme.dart';
+import 'package:sipedes/navbar/navbar.dart';
 
 import '../data/theme/app_dimen.dart';
 
@@ -98,7 +99,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       // Navigasi ke HomeScreen
                       Navigator.pushReplacement(
                         context,
-                        MaterialPageRoute(builder: (context) => HomeScreen()),
+                        MaterialPageRoute(builder: (context) => MenuNavbar()),
                       );
                     },
                     child:  Text(

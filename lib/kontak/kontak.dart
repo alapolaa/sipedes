@@ -1,16 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+class Kontak extends StatelessWidget {
+  const Kontak({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('HomeScreen '),
+      appBar: AppBar(title: Text('Kontak '),
       ),
       body: Center(
-        child: Text("Halaman HomeScreen "),
+        child: Text("Halaman Kontak "),
       ),
     );
   }
