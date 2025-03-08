@@ -7,6 +7,7 @@ import 'package:sipedes/data/extension/extension.dart';
 import 'package:sipedes/data/theme/app_color.dart';
 import 'package:sipedes/data/theme/app_font.dart';
 import 'package:sipedes/data/theme/img_string.dart';
+import 'package:sipedes/login/login.dart';
 
 import '../home/home.dart';
 
@@ -23,7 +24,7 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     Timer(const Duration(seconds: 6), () {
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => const HomeScreen()),
+        MaterialPageRoute(builder: (context) =>  LoginScreen()),
       );
     });
   }

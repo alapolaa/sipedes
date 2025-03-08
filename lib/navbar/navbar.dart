@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
+import 'package:sipedes/data/theme/theme.dart';
 import 'package:sipedes/home/home.dart';
 import 'package:sipedes/informasi/informasi.dart';
 
@@ -50,7 +51,7 @@ class _MenuNavbarState extends State<MenuNavbar> {
     return PersistentBottomNavBarItem(
       icon: Icon(icon),
       title: title,
-      activeColorPrimary: Colors.blue,
+      activeColorPrimary: AppColor.sukses,
       inactiveColorPrimary: Colors.grey,
     );
   }
@@ -69,7 +70,7 @@ class _MenuNavbarState extends State<MenuNavbar> {
         resizeToAvoidBottomInset: true,
         stateManagement: true,
         navBarHeight: 60,
-        navBarStyle: NavBarStyle.style13, // Menggunakan Style 13
+        navBarStyle: NavBarStyle.style13,
       ),
     );
   }
