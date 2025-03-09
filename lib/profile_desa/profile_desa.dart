@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sipedes/data/theme/theme.dart';
-import 'package:sipedes/footer.dart';
 import 'package:sipedes/profile_desa/sejarah/sejarah.dart';
 import 'package:sipedes/profile_desa/struktur_desa/struktur_desa.dart';
 import 'package:sipedes/profile_desa/visimisi/visimisi.dart';

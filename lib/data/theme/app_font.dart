@@ -54,6 +54,10 @@ class AppFont {
     fontSize: 16,
     fontWeight: FontWeight.w400,
   );
+  static const TextStyle  nambelasbold = TextStyle(
+    fontSize: 16,
+    fontWeight: FontWeight.w700,
+  );
 
 
 }
