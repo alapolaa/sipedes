@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:sipedes/data/theme/theme.dart';
+import 'package:sipedes/footer.dart';
+import 'package:sipedes/home/component/gallery.dart';
+import 'package:sipedes/home/component/potensi_desa.dart';
 
 import 'component/slider_corousel.dart';
 
@@ -9,8 +12,6 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-
     return Scaffold(
       appBar: AppBar(
         title: Center(
@@ -21,11 +22,15 @@ class HomeScreen extends StatelessWidget {
         ),
         backgroundColor: AppColor.appbar,
       ),
-      body: Column(
-        children: [
-          CorouselSlider(),
-
-        ],
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            CorouselSlider(),
+            PotensiDesa(),
+            Gallery(),
+            FooterScreen(),
+          ],
+        ),
       ),
     );
   }
