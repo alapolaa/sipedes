@@ -50,6 +50,10 @@ class AppFont {
     fontSize: 10,
     fontWeight: FontWeight.w400,
   );
+  static const TextStyle  nambelas = TextStyle(
+    fontSize: 16,
+    fontWeight: FontWeight.w400,
+  );
 
 
 }

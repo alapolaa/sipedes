@@ -33,10 +33,10 @@ class ProfileDesa extends StatelessWidget {
             ],
           ),
         ),
-        body: const TabBarView(
+        body: TabBarView(
           children: [
-            SejarahView(),
-            VisiMisiView(),
+            const SejarahView(),
+            const VisiMisiView(),
             StrukturDesaView(),
           ],
         ),

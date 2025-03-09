@@ -21,7 +21,7 @@ class ImgString {
   static const String kepdes ='assets/images/kepdes.jpeg';
   static const String wakil ='assets/images/wakil.jpeg';
   static const String sekretaris1 ='assets/images/sekretaris1.jpeg';
-  static const String sekretaris2 ='assets/images/sekretaris1.jpeg';
+  static const String sekretaris2 ='assets/images/sekretaris2.jpeg';
   static const String bendahara1 ='assets/images/ben1.jpeg';
   static const String bendahara2 ='assets/images/ben2.jpeg';
 
