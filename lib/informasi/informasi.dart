@@ -4,6 +4,8 @@ import 'package:sipedes/informasi/berita/berita.dart';
 import 'package:sipedes/profile_desa/struktur_desa/struktur_desa.dart';
 import 'package:sipedes/profile_desa/visimisi/visimisi.dart';
 
+import 'kegiatan/kegiatan.dart';
+
 class InformasiDesa extends StatelessWidget {
   const InformasiDesa({super.key});
 
@@ -34,7 +36,7 @@ class InformasiDesa extends StatelessWidget {
         body: TabBarView(
           children: [
              Berita(),
-            const VisiMisiView(),
+             Kegiatan(),
             StrukturDesaView(),
           ],
         ),
