@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sipedes/data/extension/extension.dart';
 import 'package:sipedes/data/theme/theme.dart';
 import 'package:sipedes/navbar/navbar.dart';
 
-import '../data/theme/app_dimen.dart';
 
-import '../home/home.dart';
+
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -95,8 +95,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         borderRadius: BorderRadius.circular(10.sp),
                       ),
                     ),
-                    onPressed: () {
-                      // Navigasi ke HomeScreen
+                    onPressed: () async {
+                      SharedPreferences prefs = await SharedPreferences.getInstance();
+                      await prefs.setBool('isLoggedIn', true); // Simpan status login
+
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(builder: (context) => MenuNavbar()),

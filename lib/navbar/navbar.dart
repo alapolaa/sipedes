@@ -68,7 +68,7 @@ class _MenuNavbarState extends State<MenuNavbar> {
         backgroundColor: Colors.white,
         handleAndroidBackButtonPress: true,
         resizeToAvoidBottomInset: true,
-        stateManagement: true,
+        stateManagement: false,
         navBarHeight: 60,
         navBarStyle: NavBarStyle.style13,
       ),
