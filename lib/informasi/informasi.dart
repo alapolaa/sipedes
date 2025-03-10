@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sipedes/data/theme/theme.dart';
 import 'package:sipedes/informasi/berita/berita.dart';
+import 'package:sipedes/informasi/pengumuman/pengumuman.dart';
 import 'package:sipedes/profile_desa/struktur_desa/struktur_desa.dart';
 import 'package:sipedes/profile_desa/visimisi/visimisi.dart';
 
@@ -37,7 +38,7 @@ class InformasiDesa extends StatelessWidget {
           children: [
              Berita(),
              Kegiatan(),
-            StrukturDesaView(),
+            Pengumuman(),
           ],
         ),
       ),

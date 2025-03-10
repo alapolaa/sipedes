@@ -103,7 +103,11 @@ class Kegiatan extends StatelessWidget {
                             width: 50, height: 50, fit: BoxFit.cover),
                       ),
                       DataCell(Text(item['kegiatan']!)),
-                      DataCell(Text(item['keterangan']!)),
+                      DataCell(Text(
+                        (item['keterangan']!.length > 50)
+                            ? '${item['keterangan']!.substring(0, 20)}...'
+                            : item['keterangan']!,
+                      )),
                       DataCell(Text(item['mulai']!)),
                       DataCell(Text(item['selesai']!)),
                       DataCell(Text(item['lokasi']!)),
