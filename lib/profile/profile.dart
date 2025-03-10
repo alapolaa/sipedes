@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sipedes/data/theme/app_font.dart';
+import 'package:sipedes/profile/edit_profile.dart';
 
 import '../data/theme/app_color.dart';
 import '../login/login.dart';
@@ -47,9 +49,16 @@ class Profile extends StatelessWidget {
                     _buildInfoRow("Alamat", "Pamekasan"),
                     SizedBox(height: 20.h),
                     SizedBox(
+                      height: 45.h,
                       width: double.infinity,
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(builder: (context) => EditProfile()),
+                                (route) => false,
+                          );
+                        },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.blue,
                           padding: EdgeInsets.symmetric(vertical: 12.h),
@@ -59,19 +68,20 @@ class Profile extends StatelessWidget {
                         ),
                         child: Text(
                           'Edit',
-                          style: TextStyle(fontSize: 16.sp, color: Colors.white),
+                          style: AppFont.empatbelas.copyWith(color: AppColor.white),
                         ),
                       ),
                     ),
                     SizedBox(height: 10.h),
                     SizedBox(
+                      height: 45.h,
                       width: double.infinity,
                       child: ElevatedButton(
                         onPressed: () {
                           Navigator.pushAndRemoveUntil(
                             context,
                             MaterialPageRoute(builder: (context) => LoginScreen()),
-                                (route) => false, // Menghapus semua halaman sebelumnya
+                                (route) => false,
                           );
                         },
 
@@ -84,7 +94,7 @@ class Profile extends StatelessWidget {
                         ),
                         child: Text(
                           'Logout',
-                          style: TextStyle(fontSize: 16.sp, color: Colors.white),
+                          style: AppFont.empatbelas.copyWith(color: AppColor.white),
                         ),
                       ),
                     ),

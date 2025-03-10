@@ -19,14 +19,14 @@ class VisiMisiView extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   6.0.height,
-                  Text("Visi", style: AppFont.nambelas),
+                  Text("Visi", style: AppFont.nambelasbold),
                   6.0.height,
                   Text(
                     "Visi visi Visi visi Visi visi Visi visi Visi visi Visi visi Visi visi Visi visi Visi visi Visi visi...",
                     style: AppFont.duabelas,
                   ),
                   20.0.height,
-                  Text("Misi", style: AppFont.nambelas),
+                  Text("Misi", style: AppFont.nambelasbold),
                   6.0.height,
                   Text(
                     "Misi misi Misi misi Misi misi Misi misi Misi misi Misi misi Misi misi Misi misi...",

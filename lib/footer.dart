@@ -49,7 +49,12 @@ class FooterScreen extends StatelessWidget {
             "Designed by Riyan.a_w",style: AppFont.sepuluhbold,
             textAlign: TextAlign.center,
           ),
-          20.0.height,
+          10.0.height,
+          Text(
+            "Version 1.0",style: TextStyle(fontSize: 8,fontWeight: FontWeight.bold, fontStyle: FontStyle.italic, color: Colors.grey),
+            textAlign: TextAlign.center,
+          ),
+          10.0.height,
         ],
       ),
     );

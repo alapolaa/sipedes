@@ -88,13 +88,13 @@ class DetailBerita extends StatelessWidget {
                       Padding(
                         padding:  EdgeInsets.all(8.sp),
                         child: SizedBox(
-                          height: 40.h,
+                          height: 45.h,
                           width: double.infinity,
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               backgroundColor: AppColor.sukses,
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.sp),
+                                borderRadius: BorderRadius.circular(10.r),
                               ),
                               elevation: 6,
                             ),
@@ -103,7 +103,7 @@ class DetailBerita extends StatelessWidget {
                             },
                             child: Text(
                               'Kembali',
-                              style: AppFont.tombolteks
+                              style: AppFont.empatbelas
                                   .copyWith(color: AppColor.white),
                             ),
                           ),

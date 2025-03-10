@@ -5,33 +5,35 @@ import 'package:sipedes/data/theme/theme.dart';
 import 'package:sipedes/footer.dart';
 import 'package:sipedes/informasi/berita/detail_berita.dart';
 
-import '../../data/theme/img_string.dart';
-
 class Berita extends StatelessWidget {
   final List<Map<String, String>> newsList = [
     {
       "image": ImgString.berita1,
       'title': 'Judul Berita 1',
       'date': '12 Maret 2025',
-      'description': 'DeskripsiDeskripsi sdsd beritajkdhf dhfsdhfhf dfhdshfdjfhdsf dfhsjfhdsjfh 4'
+      'description':
+          'DeskripsiDeskripsi sdsd beritajkdhf dhfsdhfhf dfhdshfdjfhdsf dfhsjfhdsjfh 4'
     },
     {
       "image": ImgString.berita2,
       'title': 'Judul Berita 2',
       'date': '11 Maret 2025',
-      'description': 'DeskripsiDeskripsi sdsd beritajkdhf dhfsdhfhf dfhdshfdjfhdsf dfhsjfhdsjfh 4'
+      'description':
+          'DeskripsiDeskripsi sdsd beritajkdhf dhfsdhfhf dfhdshfdjfhdsf dfhsjfhdsjfh 4'
     },
     {
       "image": ImgString.berita3,
       'title': 'Judul Berita 3',
       'date': '10 Maret 2025',
-      'description': 'DeskripsiDeskripsi sdsd beritajkdhf dhfsdhfhf dfhdshfdjfhdsf dfhsjfhdsjfh 4'
+      'description':
+          'DeskripsiDeskripsi sdsd beritajkdhf dhfsdhfhf dfhdshfdjfhdsf dfhsjfhdsjfh 4'
     },
     {
       "image": ImgString.berita4,
       'title': 'Judul Berita 4',
       'date': '9 Maret 2025',
-      'description': 'DeskripsiDeskripsi sdsd beritajkdhf dhfsdhfhf dfhdshfdjfhdsf dfhsjfhdsjfh 4DeskripsiDeskripsi sdsd beritajkdhf dhfsdhfhf dfhdshfdjfhdsf dfhsjfhdsjfh 4DeskripsiDeskripsi sdsd beritajkdhf dhfsdhfhf dfhdshfdjfhdsf dfhsjfhdsjfh 4DeskripsiDeskripsi sdsd beritajkdhf dhfsdhfhf dfhdshfdjfhdsf dfhsjfhdsjfh 4DeskripsiDeskripsi sdsd beritajkdhf dhfsdhfhf dfhdshfdjfhdsf dfhsjfhdsjfh 4DeskripsiDeskripsi sdsd beritajkdhf dhfsdhfhf dfhdshfdjfhdsf dfhsjfhdsjfh 4DeskripsiDeskripsi sdsd beritajkdhf dhfsdhfhf dfhdshfdjfhdsf dfhsjfhdsjfh 4DeskripsiDeskripsi sdsd beritajkdhf dhfsdhfhf dfhdshfdjfhdsf dfhsjfhdsjfh 4'
+      'description':
+          'DeskripsiDeskripsi sdsd beritajkdhf dhfsdhfhf dfhdshfdjfhdsf dfhsjfhdsjfh 4DeskripsiDeskripsi sdsd beritajkdhf dhfsdhfhf dfhdshfdjfhdsf dfhsjfhdsjfh 4DeskripsiDeskripsi sdsd beritajkdhf dhfsdhfhf dfhdshfdjfhdsf dfhsjfhdsjfh 4DeskripsiDeskripsi sdsd beritajkdhf dhfsdhfhf dfhdshfdjfhdsf dfhsjfhdsjfh 4DeskripsiDeskripsi sdsd beritajkdhf dhfsdhfhf dfhdshfdjfhdsf dfhsjfhdsjfh 4DeskripsiDeskripsi sdsd beritajkdhf dhfsdhfhf dfhdshfdjfhdsf dfhsjfhdsjfh 4DeskripsiDeskripsi sdsd beritajkdhf dhfsdhfhf dfhdshfdjfhdsf dfhsjfhdsjfh 4DeskripsiDeskripsi sdsd beritajkdhf dhfsdhfhf dfhdshfdjfhdsf dfhsjfhdsjfh 4'
     },
   ];
 
@@ -84,13 +86,12 @@ class Berita extends StatelessWidget {
                       child: Column(
                         children: [
                           Container(
-                            height: 150.h,
                             child: ClipRRect(
                               borderRadius: BorderRadius.vertical(
                                 top: Radius.circular(10.sp),
                               ),
                               child: Image.asset(
-                                news["image"]!,
+                                news["image"]!,height: 140.h, width: double.infinity,
                                 fit: BoxFit.cover,
                               ),
                             ),
@@ -118,8 +119,7 @@ class Berita extends StatelessWidget {
                                   textAlign: TextAlign.center,
                                   style: AppFont.duabelas,
                                   maxLines: 2,
-                                  overflow: TextOverflow
-                                      .ellipsis,
+                                  overflow: TextOverflow.ellipsis,
                                 ),
                                 10.0.height,
                                 Text(

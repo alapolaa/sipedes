@@ -4,10 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sipedes/data/extension/extension.dart';
 import 'package:sipedes/data/theme/theme.dart';
-import 'package:sipedes/navbar/navbar.dart';
-
-
-
+import '../navbar/navbar.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -37,80 +34,85 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: AppDimen.w20),
+        padding: EdgeInsets.symmetric(horizontal: 20.w),
         child: SingleChildScrollView(
           child: Center(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 100.0.height,
                 Image.asset(
                   ImgString.logo,
-                  height: 296.h,
-                  width: 316.w,
+                  height: 250.h,
+                  width: 300.w,
                 ),
-                70.0.height,
-                TextField(
-                  controller: _nikController,
-                  keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
-                    labelText: 'NIK',
-                    hintText: 'Masukkan NIK anda...',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(10.sp),
+                50.0.height,
+                SizedBox(
+                  height: 50.h,
+                  child: TextField(
+                    controller: _nikController,
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(
+                      labelText: 'NIK',
+                      labelStyle: TextStyle(fontWeight: FontWeight.bold,fontSize: 14.sp),
+                      hintText: 'Masukkan NIK anda...',
+                      hintStyle: AppFont.empatbelas.copyWith(color: Colors.grey, fontStyle: FontStyle.italic),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10.sp),
+                        ),
                       ),
                     ),
                   ),
                 ),
-                25.0.height,
-                // Input Tanggal Lahir
-                TextField(
-                  controller: _dateController,
-                  readOnly: true,
-                  decoration: InputDecoration(
-                    labelText: 'Tanggal Lahir',
-                    hintText: 'Masukkan tanggal lahir anda...',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(10.sp),
+                25.h.height,
+                SizedBox(
+                  height: 50.h,
+                  child: TextField(
+                    controller: _dateController,
+                    readOnly: true,
+                    decoration: InputDecoration(
+                      labelText: 'Tanggal Lahir',
+                      labelStyle: TextStyle(fontWeight: FontWeight.bold,fontSize: 14.sp),
+                      hintText: 'Masukkan tanggal lahir anda...',
+                      hintStyle: AppFont.empatbelas.copyWith(color: Colors.grey, fontStyle: FontStyle.italic),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10.sp),
+                        ),
                       ),
-                    ),
-                    suffixIcon: IconButton(
-                      icon: const Icon(Icons.calendar_today),
-                      onPressed: () => _selectDate(context),
+                      suffixIcon: IconButton(
+                        icon: const Icon(Icons.calendar_today),
+                        onPressed: () => _selectDate(context),
+                      ),
                     ),
                   ),
                 ),
-                75.0.height,
-
-                // Tombol Masuk
+                75.h.height,
                 SizedBox(
                   width: double.infinity,
-                  height: 50,
+                  height: 45.h,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColor.appbar,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.sp),
+                        borderRadius: BorderRadius.circular(10.r),
                       ),
                     ),
                     onPressed: () async {
-                      SharedPreferences prefs = await SharedPreferences.getInstance();
-                      await prefs.setBool('isLoggedIn', true); // Simpan status login
-
-                      Navigator.pushReplacement(
-                        context,
+                      SharedPreferences prefs =
+                          await SharedPreferences.getInstance();
+                      await prefs.setBool('isLoggedIn', true);
+                      Navigator.of(context).pushReplacement(
                         MaterialPageRoute(builder: (context) => MenuNavbar()),
                       );
                     },
-                    child:  Text(
+                    child: Text(
                       'Masuk',
-                      style: AppFont.duapuluhbold.copyWith(color: AppColor.white)
+                      style: AppFont.empatbelas.copyWith(color: AppColor.white, fontWeight: FontWeight.bold),
                     ),
                   ),
                 ),
-                20.0.height
+                20.h.height,
               ],
             ),
           ),

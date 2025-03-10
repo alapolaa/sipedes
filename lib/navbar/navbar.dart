@@ -1,29 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:sipedes/data/theme/theme.dart';
-import 'package:sipedes/home/home.dart';
 import 'package:sipedes/informasi/informasi.dart';
-
 import 'package:sipedes/kontak/kontak.dart';
 import 'package:sipedes/layanan/layanan_publik.dart';
-import 'package:sipedes/profile/profile.dart';
 import 'package:sipedes/profile_desa/profile_desa.dart';
 
-class MenuNavbar extends StatefulWidget {
-  const MenuNavbar({super.key});
+import '../home/home.dart';
+import '../profile/profile.dart';
 
+class MenuNavbar extends StatefulWidget {
   @override
   _MenuNavbarState createState() => _MenuNavbarState();
 }
 
 class _MenuNavbarState extends State<MenuNavbar> {
-  late PersistentTabController _controller;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = PersistentTabController(initialIndex: 0);
-  }
+  int _selectedIndex = 0;
 
   List<Widget> _buildScreens() {
     return [
@@ -36,41 +27,29 @@ class _MenuNavbarState extends State<MenuNavbar> {
     ];
   }
 
-  List<PersistentBottomNavBarItem> _navBarsItems() {
-    return [
-      _buildNavItem(Icons.home, "Home"),
-      _buildNavItem(Icons.account_balance, "Profile Desa"),
-      _buildNavItem(Icons.info, "Informasi"),
-      _buildNavItem(Icons.public, "Layanan"),
-      _buildNavItem(Icons.contact_mail, "Kontak"),
-      _buildNavItem(Icons.person, "Profil"),
-    ];
-  }
-
-  PersistentBottomNavBarItem _buildNavItem(IconData icon, String title) {
-    return PersistentBottomNavBarItem(
-      icon: Icon(icon),
-      title: title,
-      activeColorPrimary: AppColor.sukses,
-      inactiveColorPrimary: Colors.grey,
-    );
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: PersistentTabView(
-        context,
-        controller: _controller,
-        screens: _buildScreens(),
-        items: _navBarsItems(),
-        confineToSafeArea: true,
-        backgroundColor: Colors.white,
-        handleAndroidBackButtonPress: true,
-        resizeToAvoidBottomInset: true,
-        stateManagement: false,
-        navBarHeight: 60,
-        navBarStyle: NavBarStyle.style13,
+      body: _buildScreens()[_selectedIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.location_city), label: 'Profile Desa'),
+          BottomNavigationBarItem(icon: Icon(Icons.info), label: 'Informasi Desa'),
+          BottomNavigationBarItem(icon: Icon(Icons.public), label: 'Layanan Publik'),
+          BottomNavigationBarItem(icon: Icon(Icons.contact_phone), label: 'Kontak'),
+          BottomNavigationBarItem(icon: Icon(Icons.account_circle), label: 'Profile'),
+        ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: AppColor.sukses,
+        unselectedItemColor: AppColor.batal,
+        onTap: _onItemTapped,
       ),
     );
   }

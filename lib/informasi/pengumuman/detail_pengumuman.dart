@@ -73,7 +73,7 @@ class DetailPengumuman extends StatelessWidget {
                       Padding(
                         padding: EdgeInsets.all(8.sp),
                         child: SizedBox(
-                          height: 40.h,
+                          height: 45.h,
                           width: double.infinity,
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
@@ -88,7 +88,7 @@ class DetailPengumuman extends StatelessWidget {
                             },
                             child: Text(
                               'Kembali',
-                              style: AppFont.tombolteks
+                              style: AppFont.empatbelas
                                   .copyWith(color: AppColor.white),
                             ),
                           ),
