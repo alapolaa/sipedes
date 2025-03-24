@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 import 'package:sipedes/data/extension/extension.dart';
 import 'package:sipedes/data/theme/theme.dart';
 
@@ -29,10 +31,26 @@ class FooterScreen extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              Text("fb"),
-              Text("fb"),
-              Text("fb"),
-              Text("fb"),
+              IconButton(
+                icon: FaIcon(FontAwesomeIcons.facebook, color: Colors.blue, size: 20.sp,),
+                onPressed: () {},
+              ),
+              IconButton(
+                icon: FaIcon(FontAwesomeIcons.youtube, color: Colors.red, size: 20.sp,),
+                onPressed: () {},
+              ),
+              IconButton(
+                icon: FaIcon(FontAwesomeIcons.twitter, color: Colors.blue, size: 20.sp,),
+                onPressed: () {},
+              ),
+              IconButton(
+                icon: FaIcon(FontAwesomeIcons.instagram, color: Colors.purple, size: 20.sp,),
+                onPressed: () {},
+              ),
+              IconButton(
+                icon: FaIcon(FontAwesomeIcons.telegram, color: Colors.blueAccent, size: 20.sp,),
+                onPressed: () {},
+              ),
             ],
           ),
           6.0.height,
@@ -42,16 +60,23 @@ class FooterScreen extends StatelessWidget {
           ),
           10.0.height,
           Text(
-            "Copyright Riyan.a_w All Rights Reserved",style: AppFont.sepuluhbold,
+            "Copyright Riyan.a_w All Rights Reserved",
+            style: AppFont.sepuluhbold,
             textAlign: TextAlign.center,
           ),
           Text(
-            "Designed by Riyan.a_w",style: AppFont.sepuluhbold,
+            "Designed by Riyan.a_w",
+            style: AppFont.sepuluhbold,
             textAlign: TextAlign.center,
           ),
           10.0.height,
           Text(
-            "Version 1.0",style: TextStyle(fontSize: 8,fontWeight: FontWeight.bold, fontStyle: FontStyle.italic, color: Colors.grey),
+            "Version 1.0",
+            style: TextStyle(
+                fontSize: 8,
+                fontWeight: FontWeight.bold,
+                fontStyle: FontStyle.italic,
+                color: Colors.grey),
             textAlign: TextAlign.center,
           ),
           10.0.height,
