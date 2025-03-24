@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../model/banner.dart';
 import '../model/galeri.dart';
+import '../model/potensi_desa.dart';
+import '../model/umkm.dart';
 
 
 class ApiService {
@@ -31,5 +33,36 @@ class ApiService {
       }
     }
     throw Exception('Gagal mengambil data galeri');
+  }
+  // Ambil data potensi desa
+  Future<List<PotensiDesaModel>> fetchPotensiDesa() async {
+    final response = await http.get(Uri.parse("$baseUrl/api/home/potensi_desa.php"));
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      if (data['status'] == 'success') {
+        return (data['data'] as List).map((e) => PotensiDesaModel.fromJson(e)).toList();
+      }
+    }
+    throw Exception('Gagal mengambil data potensi desa');
+  }
+  // Ambil data UMKM Desa
+  Future<List<UmkmDesaModel>> fetchUmkmDesa() async {
+    final response = await http.get(Uri.parse("$baseUrl/api/home/umkm_desa.php"));
+
+    print("Response Status Code: ${response.statusCode}");
+    print("Response Body: ${response.body}");
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      print("Decoded JSON: $data"); // Debug JSON
+
+      if (data['status'] == 'success') {
+        return (data['data'] as List)
+            .map((e) => UmkmDesaModel.fromJson(e))
+            .toList();
+      }
+    }
+    throw Exception('Gagal mengambil data UMKM Desa');
   }
 }

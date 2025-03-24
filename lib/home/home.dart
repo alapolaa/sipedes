@@ -4,8 +4,9 @@ import 'package:sipedes/data/theme/theme.dart';
 import 'package:sipedes/footer.dart';
 import 'package:sipedes/home/component/gallery.dart';
 import 'package:sipedes/home/component/potensi_desa.dart';
+import 'package:sipedes/home/component/umkm_desa.dart';
 
-import 'component/slider_corousel.dart';
+import 'component/banner.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -25,9 +26,10 @@ class HomeScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            CorouselSlider(),
+            BannerPage(),
             PotensiDesa(),
-            Gallery(),
+            UmkmDesa(),
+            GalleryPage(),
             FooterScreen(),
           ],
         ),
