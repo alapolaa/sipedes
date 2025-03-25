@@ -61,7 +61,7 @@ class _PotensiDesaState extends State<PotensiDesa> {
                     potensiDesa.keterangan,
                     style: AppFont.duabelas,
                   ),
-                  20.0.height,
+
                 ],
               );
             },

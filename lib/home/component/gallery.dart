@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sipedes/data/extension/extension.dart';
+import 'package:sipedes/data/theme/app_dimen.dart';
+import 'package:sipedes/home/component/semua_galery.dart';
 import '../../data/api_service/api_service.dart';
 import '../../data/model/galeri.dart';
 import '../../data/theme/app_color.dart';
@@ -37,7 +39,7 @@ class _GalleryPageState extends State<GalleryPage> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(20.sp),
+      padding: EdgeInsets.symmetric(horizontal: AppDimen.w20),
       child: Column(
 
         children: [
@@ -53,7 +55,9 @@ class _GalleryPageState extends State<GalleryPage> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>SemuaGalery()));
+                },
                 child: Text(
                   "Lihat Semua",
                   style: TextStyle(
@@ -69,23 +73,24 @@ class _GalleryPageState extends State<GalleryPage> {
           galleries.isEmpty
               ? const Center(child: CircularProgressIndicator())
               : GridView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 10,
-                    mainAxisSpacing: 10,
-                  ),
-                  itemCount: galleries.length,
-                  itemBuilder: (context, index) {
-                    final gallery = galleries[index];
-                    return Image.network(
-                      gallery.gambar,
-                      width: 360.w,
-                      fit: BoxFit.cover,
-                    );
-                  },
-                ),
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              crossAxisSpacing: 10,
+              mainAxisSpacing: 10,
+            ),
+            itemCount: galleries.length > 4 ? 4 : galleries.length,
+            itemBuilder: (context, index) {
+              final gallery = galleries[index];
+              return Image.network(
+                gallery.gambar,
+                width: 360.w,
+                fit: BoxFit.cover,
+              );
+            },
+          ),
+
           100.0.height,
         ],
       ),
