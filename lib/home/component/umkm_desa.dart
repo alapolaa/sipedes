@@ -53,7 +53,7 @@ class _UmkmDesaState extends State<UmkmDesa> {
                     children: [
                       Text(
                         umkm.title,
-                        style: AppFont.duapuluhbold,
+                        style: AppFont.tombolteks,
                       ),
                       5.0.height,
                       Text(

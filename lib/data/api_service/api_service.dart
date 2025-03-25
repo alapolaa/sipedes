@@ -3,11 +3,13 @@ import 'package:http/http.dart' as http;
 import '../model/banner.dart';
 import '../model/galeri.dart';
 import '../model/potensi_desa.dart';
+import '../model/sejarah.dart';
 import '../model/umkm.dart';
 
 
 class ApiService {
   static const String baseUrl = "http://192.168.20.202/slampang";
+  static const String baseImageUrl = "$baseUrl/uploads";
 
   // Ambil data banner
   Future<List<BannerModel>> fetchBanners() async {
@@ -65,4 +67,24 @@ class ApiService {
     }
     throw Exception('Gagal mengambil data UMKM Desa');
   }
+  // Ambil data sejarah desa
+  Future<List<SejarahDesaModel>> fetchSejarahDesa() async {
+    final response = await http.get(Uri.parse("$baseUrl/api/profile_desa/sejarah.php"));
+
+    print("Response Status Code: ${response.statusCode}");
+    print("Response Body: ${response.body}");
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      print("Decoded JSON: $data"); // Debug JSON
+
+      if (data['status'] == 'success') {
+        return (data['data'] as List)
+            .map((e) => SejarahDesaModel.fromJson(e))
+            .toList();
+      }
+    }
+    throw Exception('Gagal mengambil data sejarah desa');
+  }
+
 }
