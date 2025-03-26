@@ -4,7 +4,6 @@ import 'package:sipedes/informasi/informasi.dart';
 import 'package:sipedes/kontak/kontak.dart';
 import 'package:sipedes/layanan/layanan_publik.dart';
 import 'package:sipedes/profile_desa/profile_desa.dart';
-import '../coba.dart';
 import '../home/home.dart';
 import '../profile/profile.dart';
 
