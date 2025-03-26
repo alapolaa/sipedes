@@ -1,47 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:sipedes/data/theme/theme.dart';
-import 'package:sipedes/footer.dart';
-import 'package:sipedes/informasi/kegiatan/detail_kegiatan.dart';
+import '../../data/api_service/api_service.dart';
+import '../../data/model/kegiatan.dart';
+import '../../footer.dart';
+import 'detail_kegiatan.dart';
 
-class Kegiatan extends StatelessWidget {
-  final List<Map<String, String>> dataKegiatan = [
-    {
-      'no': '1',
-      'gambar': ImgString.kegiatan1,
-      'kegiatan': 'Gotong Royong',
-      'keterangan': 'Membersihkan lingkungan desa',
-      'mulai': '27 Januari 2030 / 08:00 WIB',
-      'selesai': '29 Januari 2030 / 14:00 WIB',
-      'lokasi': 'Balai Desa'
-    },
-    {
-      'no': '2',
-      'gambar': ImgString.kegiatan2,
-      'kegiatan': 'Pelatihan UMKM',
-      'keterangan': 'Pelatihan pembuatan kerajinan',
-      'mulai': '27 Januari 2030 / 08:00 WIB',
-      'selesai': '29 Januari 2030 / 14:00 WIB',
-      'lokasi': 'Gedung Serbaguna'
-    },
-    {
-      'no': '3',
-      'gambar': ImgString.kegiatan3,
-      'kegiatan': 'Gotong Royong',
-      'keterangan': 'Membersihkan lingkungan desa',
-      'mulai': '27 Januari 2030 / 08:00 WIB',
-      'selesai': '29 Januari 2030 / 14:00 WIB',
-      'lokasi': 'Balai Desa'
-    },
-    {
-      'no': '4',
-      'gambar': ImgString.kegiatan4,
-      'kegiatan': 'Pelatihan UMKM',
-      'keterangan': 'Pelatihan pembuatan kerajinan',
-      'mulai': '27 Januari 2030 / 08:00 WIB',
-      'selesai': '29 Januari 2030 / 14:00 WIB',
-      'lokasi': 'Gedung Serbaguna'
-    },
-  ];
+class Kegiatan extends StatefulWidget {
+  @override
+  _KegiatanState createState() => _KegiatanState();
+}
+
+class _KegiatanState extends State<Kegiatan> {
+  late Future<List<KegiatanModel>> _kegiatanList;
+
+  @override
+  void initState() {
+    super.initState();
+    _kegiatanList = ApiService().fetchKegiatan();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,72 +27,101 @@ class Kegiatan extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(10.0),
               child: Text(
-                "Kegiatan",
-                style: AppFont.duapuluhbold,
+                "Kegiatan Desa",
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10),
               child: Text(
-                'Menyajikan informasi terbaru tentang peristiwa dan kegiatan terkini dari Desa Larangan Slampar.',
-                style: AppFont.duabelas,
+                'Menyajikan informasi terbaru tentang peristiwa dan kegiatan terkini dari desa.',
+                style: TextStyle(fontSize: 12),
                 textAlign: TextAlign.center,
               ),
             ),
             SizedBox(height: 10),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: DataTable(
-                showCheckboxColumn: false,
-                columnSpacing: 10,
-                columns: [
-                  DataColumn(label: Text('No')),
-                  DataColumn(label: Text('Gambar')),
-                  DataColumn(label: Text('Kegiatan')),
-                  DataColumn(label: Text('Keterangan')),
-                  DataColumn(label: Text('Tanggal Mulai')),
-                  DataColumn(label: Text('Tanggal Selesai')),
-                  DataColumn(label: Text('Lokasi')),
-                ],
-                rows: dataKegiatan
-                    .map(
-                      (item) => DataRow(
-                    onSelectChanged: (selected) {
-                      if (selected != null && selected) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                DetailKegiatanScreen(data: item),
-                          ),
-                        );
-                      }
-                    },
-                    cells: [
-                      DataCell(Text(item['no']!)),
-                      DataCell(
-                        item['gambar']!.startsWith('http')
-                            ? Image.network(item['gambar']!,
-                            width: 50, height: 50, fit: BoxFit.cover)
-                            : Image.asset(item['gambar']!,
-                            width: 50, height: 50, fit: BoxFit.cover),
-                      ),
-                      DataCell(Text(item['kegiatan']!)),
-                      DataCell(Text(
-                        (item['keterangan']!.length > 50)
-                            ? '${item['keterangan']!.substring(0, 20)}...'
-                            : item['keterangan']!,
-                      )),
-                      DataCell(Text(item['mulai']!)),
-                      DataCell(Text(item['selesai']!)),
-                      DataCell(Text(item['lokasi']!)),
+            FutureBuilder<List<KegiatanModel>>(
+              future: _kegiatanList,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Center(child: Text('Terjadi kesalahan!'));
+                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return Center(child: Text('Tidak ada kegiatan tersedia'));
+                }
+
+                final kegiatan = snapshot.data!;
+                return SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: DataTable(
+                    showCheckboxColumn: false,
+                    columnSpacing: 10,
+                    columns: [
+                      DataColumn(label: Text('No')),
+                      DataColumn(label: Text('Gambar')),
+                      DataColumn(label: Text('Kegiatan')),
+                      DataColumn(label: Text('Keterangan')),
+                      DataColumn(label: Text('Tanggal Mulai')),
+                      DataColumn(label: Text('Tanggal Selesai')),
+                      DataColumn(label: Text('Lokasi')),
                     ],
+                    rows: kegiatan
+                        .asMap()
+                        .entries
+                        .map(
+                          (entry) => DataRow(
+                            onSelectChanged: (selected) {
+                              if (selected != null && selected) {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => DetailKegiatanScreen(
+                                      data: {
+                                        "gambar": "${ApiService.baseUrl}/${entry.value.gambar}",
+                                        "kegiatan": entry.value.namaKegiatan,
+                                        "mulai": entry.value.tanggalMulai,
+                                        "selesai": entry.value.tanggalSelesai,
+                                        "lokasi": entry.value.lokasi,
+                                        "keterangan": entry.value.keterangan,
+                                      },
+                                    ),
+                                  ),
+                                );
+                              }
+                            },
+
+                            cells: [
+                              DataCell(Text((entry.key + 1).toString())),
+                              DataCell(
+                                Image.network(
+                                  "${ApiService.baseUrl}/${entry.value.gambar}",
+                                  width: 50,
+                                  height: 50,
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (context, error, stackTrace) {
+                                    return Icon(Icons.broken_image, size: 50);
+                                  },
+                                ),
+                              ),
+                              DataCell(Text(entry.value.namaKegiatan)),
+                              DataCell(Text(
+                                entry.value.keterangan.length > 50
+                                    ? '${entry.value.keterangan.substring(0, 20)}...'
+                                    : entry.value.keterangan,
+                              )),
+                              DataCell(Text(entry.value.tanggalMulai)),
+                              DataCell(Text(entry.value.tanggalSelesai)),
+                              DataCell(Text(entry.value.lokasi)),
+                            ],
+                          ),
+                        )
+                        .toList(),
                   ),
-                )
-                    .toList(),
-              ),
+                );
+              },
             ),
-            SizedBox(height:100),
+            SizedBox(height: 100),
             FooterScreen(),
           ],
         ),
@@ -125,4 +129,3 @@ class Kegiatan extends StatelessWidget {
     );
   }
 }
-

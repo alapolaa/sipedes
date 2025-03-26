@@ -63,10 +63,14 @@ class DetailKegiatanScreen extends StatelessWidget {
                             topLeft: Radius.circular(10.sp),
                             topRight: Radius.circular(10.sp),
                           ),
-                          child: Image.asset(
+                          child: Image.network(
                             data["gambar"]!,
                             fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) {
+                              return Icon(Icons.broken_image, size: 50);
+                            },
                           ),
+
                         ),
                       ),
                       Padding(
@@ -78,19 +82,18 @@ class DetailKegiatanScreen extends StatelessWidget {
                               data['kegiatan']!,
                               style: AppFont.nambelas,
                             ),
-                            5.0.height,
+                            SizedBox(height: 5.0.h),
                             Text("Tanggal Mulai: ${data['mulai']}",
                                 style: AppFont.sepuluh),
-                            2.0.height,
+                            SizedBox(height: 2.0.h),
                             Text(
                               "Tanggal Selesai: ${data['selesai']}",
                               style: AppFont.sepuluh,
                             ),
-                            2.0.height,
+                            SizedBox(height: 2.0.h),
                             Text("Lokasi: ${data['lokasi']}",
-
                                 style: AppFont.sepuluh),
-                            5.0.height,
+                            SizedBox(height: 5.0.h),
                             Text(data['keterangan']!),
                           ],
                         ),

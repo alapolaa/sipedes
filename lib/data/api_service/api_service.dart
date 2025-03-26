@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../model/banner.dart';
 import '../model/berita.dart';
 import '../model/galeri.dart';
+import '../model/kegiatan.dart';
 import '../model/potensi_desa.dart';
 import '../model/sejarah.dart';
 import '../model/struktur.dart';
@@ -173,5 +174,19 @@ class ApiService {
       }
     }
     throw Exception('Gagal mengambil data berita');
+  }
+  // Ambil data kegiatan
+  Future<List<KegiatanModel>> fetchKegiatan() async {
+    final response = await http.get(Uri.parse("$baseUrl/api/informasi_desa/kegiatan.php"));
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      if (data.containsKey('data')) {
+        return (data['data'] as List)
+            .map((e) => KegiatanModel.fromJson(e))
+            .toList();
+      }
+    }
+    throw Exception('Gagal mengambil data kegiatan');
   }
 }
