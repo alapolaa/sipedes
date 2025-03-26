@@ -5,6 +5,7 @@ import '../model/banner.dart';
 import '../model/berita.dart';
 import '../model/galeri.dart';
 import '../model/kegiatan.dart';
+import '../model/pengumuman.dart';
 import '../model/potensi_desa.dart';
 import '../model/sejarah.dart';
 import '../model/struktur.dart';
@@ -188,5 +189,18 @@ class ApiService {
       }
     }
     throw Exception('Gagal mengambil data kegiatan');
+  }
+  // Ambil data pengumuman
+  Future<List<PengumumanModel>> fetchPengumuman() async {
+    final response =
+    await http.get(Uri.parse("$baseUrl/api/informasi_desa/pengumuman.php"));
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      return (data['data'] as List)
+          .map((e) => PengumumanModel.fromJson(e))
+          .toList();
+    }
+    throw Exception('Gagal mengambil data pengumuman');
   }
 }

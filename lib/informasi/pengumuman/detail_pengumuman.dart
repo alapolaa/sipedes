@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sipedes/data/extension/extension.dart';
 import 'package:sipedes/data/theme/theme.dart';
+import '../../data/model/pengumuman.dart';
 
 
-class DetailPengumuman extends StatelessWidget {
-  final Map<String, String> pengumuman;
+class DetailPengumumanPage extends StatelessWidget {
+  final PengumumanModel pengumuman;
 
-  DetailPengumuman({required this.pengumuman});
+  DetailPengumumanPage({required this.pengumuman});
 
   @override
   Widget build(BuildContext context) {
@@ -43,30 +44,26 @@ class DetailPengumuman extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-
                       Padding(
                         padding: EdgeInsets.all(10.0.sp),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              pengumuman['judul']!,
-                              style: AppFont.nambelas,
-                            ),
-
-
-                            2.0.height,
-                            Text(
-                              pengumuman['tanggal']!,
+                              pengumuman.judul,
                               style: AppFont.nambelas,
                             ),
                             2.0.height,
                             Text(
-                              pengumuman['keterangan']!,
+                              pengumuman.tanggal,
+                              style: AppFont.nambelas,
+                            ),
+                            2.0.height,
+                            Text(
+                              pengumuman.keterangan,
                               style: AppFont.nambelas,
                             ),
                             5.0.height,
-
                           ],
                         ),
                       ),
@@ -88,8 +85,7 @@ class DetailPengumuman extends StatelessWidget {
                             },
                             child: Text(
                               'Kembali',
-                              style: AppFont.empatbelas
-                                  .copyWith(color: AppColor.white),
+                              style: AppFont.empatbelas.copyWith(color: AppColor.white),
                             ),
                           ),
                         ),

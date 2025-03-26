@@ -2,36 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:sipedes/data/theme/theme.dart';
 import 'package:sipedes/footer.dart';
 import 'package:sipedes/informasi/pengumuman/detail_pengumuman.dart';
+import '../../data/api_service/api_service.dart';
+import '../../data/model/pengumuman.dart';
 
-import '../kegiatan/detail_kegiatan.dart';
+class Pengumuman extends StatefulWidget {
+  @override
+  _PengumumanState createState() => _PengumumanState();
+}
 
-class Pengumuman extends StatelessWidget {
-  final List<Map<String, String>> pengumuman = [
-    {
-      'no': '1',
-      'judul': 'Membersihkan lingkungan desa',
-      'keterangan': 'Balai Desa',
-      'tanggal': '27 Januari 2030 / 08:00 WIB'
-    },
-    {
-      'no': '2',
-      'judul': 'Membersihkan lingkungan desa',
-      'keterangan': 'Balai Desa',
-      'tanggal': '27 Januari 2030 / 08:00 WIB'
-    },
-    {
-      'no': '3',
-      'judul': 'Membersihkan lingkungan desa',
-      'keterangan': 'Balai Desa',
-      'tanggal': '27 Januari 2030 / 08:00 WIB'
-    },
-    {
-      'no': '4',
-      'judul': 'Membersihkan lingkungan desa',
-      'keterangan': 'Balai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai DesaBalai Desa',
-      'tanggal': '27 Januari 2030 / 08:00 WIB'
-    },
-  ];
+class _PengumumanState extends State<Pengumuman> {
+  late Future<List<PengumumanModel>> futurePengumuman;
+
+  @override
+  void initState() {
+    super.initState();
+    futurePengumuman = ApiService().fetchPengumuman();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,46 +41,64 @@ class Pengumuman extends StatelessWidget {
               ),
             ),
             SizedBox(height: 10),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: DataTable(
-                showCheckboxColumn: false,
-                columnSpacing: 10,
-                columns: [
-                  DataColumn(label: Text('No')),
-                  DataColumn(label: Text('Judul')),
-                  DataColumn(label: Text('Keterangan')),
-                  DataColumn(label: Text('Tanggal',)),
-                ],
-                rows: pengumuman
-                    .map(
-                      (item) => DataRow(
-                        onSelectChanged: (selected) {
-                          if (selected != null && selected) {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    DetailPengumuman(pengumuman: item),
-                              ),
-                            );
-                          }
-                        },
-                        cells: [
-                          DataCell(Text(item['no']!)),
-                          DataCell(Text(item['judul']!)),
-                          DataCell(Text(
-                            (item['keterangan']!.length > 50)
-                                ? '${item['keterangan']!.substring(0, 20)}...'
-                                : item['keterangan']!,
-                          )),
+            FutureBuilder<List<PengumumanModel>>(
+              future: futurePengumuman,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Center(
+                      child: Text("Terjadi kesalahan: \${snapshot.error}"));
+                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return Center(child: Text("Tidak ada pengumuman"));
+                }
 
-                          DataCell(Text(item['tanggal']!)),
-                        ],
-                      ),
-                    )
-                    .toList(),
-              ),
+                final pengumumanList = snapshot.data!;
+
+                return SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: DataTable(
+                    showCheckboxColumn: false,
+                    columnSpacing: 10,
+                    columns: [
+                      DataColumn(label: Text('No')),
+                      DataColumn(label: Text('Judul')),
+                      DataColumn(label: Text('Keterangan')),
+                      DataColumn(label: Text('Tanggal')),
+                    ],
+                    rows: pengumumanList
+                        .asMap()
+                        .entries
+                        .map(
+                          (entry) => DataRow(
+                            onSelectChanged: (selected) {
+                              if (selected != null && selected) {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => DetailPengumumanPage(
+                                        pengumuman: entry.value),
+                                  ),
+                                );
+                              }
+                            },
+                            cells: [
+                              DataCell(Text((entry.key + 1).toString())),
+                              DataCell(Text(
+                                  truncateText(entry.value.judul, 4),
+                                  style: AppFont.nambelas)),
+                              DataCell(Text(
+                                  truncateText(entry.value.keterangan, 4),
+                                  style: AppFont.nambelas)),
+                              DataCell(Text(entry.value.tanggal,
+                                  style: AppFont.nambelas)),
+                            ],
+                          ),
+                        )
+                        .toList(),
+                  ),
+                );
+              },
             ),
             SizedBox(height: 100),
             FooterScreen(),
@@ -102,5 +106,13 @@ class Pengumuman extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String truncateText(String text, int maxWords) {
+    List<String> words = text.split(' ');
+    if (words.length > maxWords) {
+      return words.sublist(0, maxWords).join(' ') + '...';
+    }
+    return text;
   }
 }
