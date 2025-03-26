@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
             primarySwatch: Colors.blue,
           ),
-          home: isLoggedIn ? SplashScreen() : SplashScreen(),
+          home: isLoggedIn ? MenuNavbar() : MenuNavbar(),
         );
       },
     );

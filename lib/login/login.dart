@@ -1,12 +1,12 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:http/http.dart' as http;
 import 'package:sipedes/data/extension/extension.dart';
+import '../data/api_service/api_service.dart';
+import '../data/theme/app_color.dart';
 import '../data/theme/img_string.dart';
 import '../navbar/navbar.dart';
+
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -16,6 +16,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _nikController = TextEditingController();
   final TextEditingController _dateController = TextEditingController();
+  final ApiService _apiService = ApiService();
   bool _isLoading = false;
 
   Future<void> _selectDate(BuildContext context) async {
@@ -45,29 +46,17 @@ class _LoginScreenState extends State<LoginScreen> {
       _isLoading = true;
     });
 
-    final String url = 'http://192.168.20.202/slampang/api/login.php';
     try {
-      final response = await http.post(
-        Uri.parse(url),
-        body: {
-          'nik': _nikController.text,
-          'tanggal_lahir': _dateController.text,
-        },
-      );
+      final result =
+      await _apiService.login(_nikController.text, _dateController.text);
 
-      final data = jsonDecode(response.body);
-
-      if (data['status'] == 'success') {
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        await prefs.setBool('isLoggedIn', true);
-        await prefs.setString('user_nik', _nikController.text);
-
+      if (result['status'] == 'success') {
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (context) => MenuNavbar()),
         );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Login gagal: ${data['message']}')),
+          SnackBar(content: Text('Login gagal: ${result['message']}')),
         );
       }
     } catch (e) {
@@ -136,7 +125,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   height: 45.h,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue, // Ganti sesuai tema
+                      backgroundColor: AppColor.appbar,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10.r),
                       ),
@@ -145,11 +134,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: _isLoading
                         ? CircularProgressIndicator(color: Colors.white)
                         : Text(
-                            'Masuk',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
-                          ),
+                      'Masuk',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold),
+                    ),
                   ),
                 ),
                 20.h.height,

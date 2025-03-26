@@ -1,48 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sipedes/data/api_service/api_service.dart';
 import 'package:sipedes/data/extension/extension.dart';
-import 'package:sipedes/data/theme/theme.dart';
+import 'package:sipedes/data/model/struktur.dart';
 import 'package:sipedes/footer.dart';
 
 import '../../data/theme/app_dimen.dart';
 
-class StrukturDesaView extends StatelessWidget {
-   StrukturDesaView({super.key});
+class StrukturDesaView extends StatefulWidget {
+  StrukturDesaView({super.key});
 
-  // Daftar data orang
-  final List<Map<String, String>> people = const [
-    {
-      "image":ImgString.kepdes,
-      "name": "Rian Maulana",
-      "position": "Kepala Desa",
-    },
-    {
-      "image":ImgString.wakil,
-      "name": "Siti Nurjamilah",
-      "position": "Wakil Kepdes",
-    },
-    {
-      "image":ImgString.sekretaris1,
-      "name": "Wulandari",
-      "position": "Sekretaris 1",
-    },
-    {
-      "image":ImgString.sekretaris2,
-      "name": "Maulidia",
-      "position": "Sekretaris 2",
-    },
-    {
-      "image":ImgString.bendahara1,
-      "name": "Kagura",
-      "position": "Bendahara1",
-    },
-    {
-      "image":ImgString.bendahara2,
-      "name": "Selena",
-      "position": "Bendahara2",
-    },
+  @override
+  _StrukturDesaViewState createState() => _StrukturDesaViewState();
+}
 
-  ];
+class _StrukturDesaViewState extends State<StrukturDesaView> {
+  late Future<List<StrukturDesaModel>> futureStrukturDesa;
+
+  @override
+  void initState() {
+    super.initState();
+    futureStrukturDesa = ApiService().fetchStrukturDesa();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,71 +33,86 @@ class StrukturDesaView extends StatelessWidget {
               horizontal: AppDimen.w10,
               vertical: AppDimen.h4,
             ),
-            child: GridView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 12.0,
-                mainAxisSpacing: 12.0,
-                childAspectRatio: 0.7,
-              ),
-              itemCount: people.length,
-              itemBuilder: (context, index) {
-                final person = people[index];
-                return Card(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.sp),
-                  ),
-                  elevation: 3,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Expanded(
-                        flex: 3,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.vertical(
-                            top: Radius.circular(10.sp),
-                          ),
-                          child: Image.asset(
-                            person["image"]!,
-                            fit: BoxFit.cover,
-                          ),
+            child: FutureBuilder<List<StrukturDesaModel>>(
+              future: futureStrukturDesa,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Center(child: Text('Error: ${snapshot.error}'));
+                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return Center(child: Text('Data tidak tersedia'));
+                } else {
+                  return GridView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 12.0,
+                      mainAxisSpacing: 12.0,
+                      childAspectRatio: 0.7,
+                    ),
+                    itemCount: snapshot.data!.length,
+                    itemBuilder: (context, index) {
+                      final person = snapshot.data![index];
+                      return Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.sp),
                         ),
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.grey[300],
-                            borderRadius: BorderRadius.vertical(
-                              bottom: Radius.circular(10.sp),
+                        elevation: 3,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Expanded(
+                              flex: 3,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.vertical(
+                                  top: Radius.circular(10.sp),
+                                ),
+                                child: Image.network(
+                                  "${ApiService.baseUrl}/${person.gambar}",
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (context, error, stackTrace) =>
+                                      Icon(Icons.person, size: 50),
+                                ),
+                              ),
                             ),
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                person["name"]!,
-                                style: const TextStyle(
-                                  fontSize: 16.0,
-                                  fontWeight: FontWeight.bold,
+                            Expanded(
+                              flex: 1,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[300],
+                                  borderRadius: BorderRadius.vertical(
+                                    bottom: Radius.circular(10.sp),
+                                  ),
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      person.nama,
+                                      style: const TextStyle(
+                                        fontSize: 16.0,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    Text(
+                                      person.jabatan,
+                                      style: const TextStyle(
+                                        fontSize: 14.0,
+                                        color: Colors.black54,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
-                              Text(
-                                person["position"]!,
-                                style: const TextStyle(
-                                  fontSize: 14.0,
-                                  color: Colors.black54,
-                                ),
-                              ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
-                      ),
-                    ],
-                  ),
-                );
+                      );
+                    },
+                  );
+                }
               },
             ),
           ),

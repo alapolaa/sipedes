@@ -39,7 +39,8 @@ class _SejarahViewState extends State<SejarahView> {
         var sejarah = snapshot.data![0];
 
         // Mengambil nama file dari path API (tanpa "admin/")
-        String imageUrl = "${ApiService.baseImageUrl}/${sejarah.gambar.split('/').last}";
+        String imageUrl =
+            "${ApiService.baseImageUrl}/${sejarah.gambar.split('/').last}";
 
         return SingleChildScrollView(
           child: Column(
@@ -67,7 +68,6 @@ class _SejarahViewState extends State<SejarahView> {
                 padding: EdgeInsets.symmetric(horizontal: 20.w),
                 child: Text(
                   sejarah.keterangan,
-                  textAlign: TextAlign.justify,
                   style: AppFont.duabelas,
                 ),
               ),

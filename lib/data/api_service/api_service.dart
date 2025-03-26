@@ -1,9 +1,11 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import '../model/banner.dart';
 import '../model/galeri.dart';
 import '../model/potensi_desa.dart';
 import '../model/sejarah.dart';
+import '../model/struktur.dart';
 import '../model/umkm.dart';
 import '../model/visi_misi.dart';
 
@@ -118,5 +120,42 @@ class ApiService {
   }
 
 
+  // Fungsi Login
+  Future<Map<String, dynamic>> login(String nik, String tanggalLahir) async {
+    final String url = "$baseUrl/api/login.php";
+    try {
+      final response = await http.post(
+        Uri.parse(url),
+        body: {
+          'nik': nik,
+          'tanggal_lahir': tanggalLahir,
+        },
+      );
+
+      final data = jsonDecode(response.body);
+      if (data['status'] == 'success') {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setBool('isLoggedIn', true);
+        await prefs.setString('user_nik', nik);
+      }
+
+      return data;
+    } catch (e) {
+      throw Exception('Terjadi kesalahan: $e');
+    }
+  }
+  // Ambil data struktur desa
+  Future<List<StrukturDesaModel>> fetchStrukturDesa() async {
+    final response =
+    await http.get(Uri.parse("$baseUrl/api/profile_desa/struktur_desa.php"));
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      return (data['data'] as List)
+          .map((e) => StrukturDesaModel.fromJson(e))
+          .toList();
+    }
+    throw Exception('Gagal mengambil data struktur desa');
+  }
 
 }
