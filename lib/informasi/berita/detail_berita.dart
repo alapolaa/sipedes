@@ -3,6 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sipedes/data/extension/extension.dart';
 import 'package:sipedes/data/theme/theme.dart';
 
+import '../../data/api_service/api_service.dart';
+
 class DetailBerita extends StatelessWidget {
   final Map<String, String> news;
 
@@ -63,10 +65,11 @@ class DetailBerita extends StatelessWidget {
                             topLeft: Radius.circular(10.sp),
                             topRight: Radius.circular(10.sp),
                           ),
-                          child: Image.asset(
-                            news["image"]!,
+                          child: Image.network(
+                            "${ApiService.baseUrl}/${news["image"]}",
                             fit: BoxFit.cover,
-                          ),
+                          )
+
                         ),
                       ),
                       Padding(
@@ -86,7 +89,7 @@ class DetailBerita extends StatelessWidget {
                         ),
                       ),
                       Padding(
-                        padding:  EdgeInsets.all(8.sp),
+                        padding: EdgeInsets.all(8.sp),
                         child: SizedBox(
                           height: 45.h,
                           width: double.infinity,
@@ -103,8 +106,7 @@ class DetailBerita extends StatelessWidget {
                             },
                             child: Text(
                               'Kembali',
-                              style: AppFont.empatbelas
-                                  .copyWith(color: AppColor.white),
+                              style: AppFont.empatbelas.copyWith(color: AppColor.white),
                             ),
                           ),
                         ),

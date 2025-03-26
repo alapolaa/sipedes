@@ -1,41 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sipedes/data/api_service/api_service.dart';
 import 'package:sipedes/data/extension/extension.dart';
+import 'package:sipedes/data/model/berita.dart';
 import 'package:sipedes/data/theme/theme.dart';
 import 'package:sipedes/footer.dart';
-import 'package:sipedes/informasi/berita/detail_berita.dart';
+import 'detail_berita.dart';
 
-class Berita extends StatelessWidget {
-  final List<Map<String, String>> newsList = [
-    {
-      "image": ImgString.berita1,
-      'title': 'Judul Berita 1',
-      'date': '12 Maret 2025',
-      'description':
-          'DeskripsiDeskripsi sdsd beritajkdhf dhfsdhfhf dfhdshfdjfhdsf dfhsjfhdsjfh 4'
-    },
-    {
-      "image": ImgString.berita2,
-      'title': 'Judul Berita 2',
-      'date': '11 Maret 2025',
-      'description':
-          'DeskripsiDeskripsi sdsd beritajkdhf dhfsdhfhf dfhdshfdjfhdsf dfhsjfhdsjfh 4'
-    },
-    {
-      "image": ImgString.berita3,
-      'title': 'Judul Berita 3',
-      'date': '10 Maret 2025',
-      'description':
-          'DeskripsiDeskripsi sdsd beritajkdhf dhfsdhfhf dfhdshfdjfhdsf dfhsjfhdsjfh 4'
-    },
-    {
-      "image": ImgString.berita4,
-      'title': 'Judul Berita 4',
-      'date': '9 Maret 2025',
-      'description':
-          'DeskripsiDeskripsi sdsd beritajkdhf dhfsdhfhf dfhdshfdjfhdsf dfhsjfhdsjfh 4DeskripsiDeskripsi sdsd beritajkdhf dhfsdhfhf dfhdshfdjfhdsf dfhsjfhdsjfh 4DeskripsiDeskripsi sdsd beritajkdhf dhfsdhfhf dfhdshfdjfhdsf dfhsjfhdsjfh 4DeskripsiDeskripsi sdsd beritajkdhf dhfsdhfhf dfhdshfdjfhdsf dfhsjfhdsjfh 4DeskripsiDeskripsi sdsd beritajkdhf dhfsdhfhf dfhdshfdjfhdsf dfhsjfhdsjfh 4DeskripsiDeskripsi sdsd beritajkdhf dhfsdhfhf dfhdshfdjfhdsf dfhsjfhdsjfh 4DeskripsiDeskripsi sdsd beritajkdhf dhfsdhfhf dfhdshfdjfhdsf dfhsjfhdsjfh 4DeskripsiDeskripsi sdsd beritajkdhf dhfsdhfhf dfhdshfdjfhdsf dfhsjfhdsjfh 4'
-    },
-  ];
+class Berita extends StatefulWidget {
+  @override
+  _BeritaState createState() => _BeritaState();
+}
+
+class _BeritaState extends State<Berita> {
+  late Future<List<BeritaModel>> _futureBerita;
+
+  @override
+  void initState() {
+    super.initState();
+    _futureBerita = ApiService().fetchBerita();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,83 +42,105 @@ class Berita extends StatelessWidget {
             8.0.height,
             Padding(
               padding: EdgeInsets.all(10.0.sp),
-              child: GridView.builder(
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 10,
-                  mainAxisSpacing: 10,
-                  childAspectRatio: 0.7,
-                ),
-                itemCount: newsList.length,
-                itemBuilder: (context, index) {
-                  final news = newsList[index];
-                  return GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => DetailBerita(news: news),
+              child: FutureBuilder<List<BeritaModel>>(
+                future: _futureBerita,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Center(child: Text("Gagal mengambil data"));
+                  } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                    return Center(child: Text("Tidak ada berita"));
+                  }
+
+                  final beritaList = snapshot.data!;
+                  return GridView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 10,
+                      mainAxisSpacing: 10,
+                      childAspectRatio: 0.7,
+                    ),
+                    itemCount: beritaList.length,
+                    itemBuilder: (context, index) {
+                      final berita = beritaList[index];
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => DetailBerita(
+                                news: {
+                                  "image": berita
+                                      .gambar, // Sesuaikan dengan data berita
+                                  "title": berita.judul,
+                                  "date": berita.tanggal,
+                                  "description": berita.keterangan,
+                                },
+                              ),
+                            ),
+                          );
+                        },
+                        child: Card(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.sp),
+                          ),
+                          child: Column(
+                            children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.vertical(
+                                  top: Radius.circular(10.sp),
+                                ),
+                                child: Image.network(
+                                  "${ApiService.baseUrl}/${berita.gambar}",
+                                  height: 140.h,
+                                  width: double.infinity,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: AppDimen.w8),
+                                child: Column(
+                                  children: [
+                                    6.0.height,
+                                    Text(
+                                      berita.judul,
+                                      textAlign: TextAlign.center,
+                                      style: AppFont.nambelasbold,
+                                    ),
+                                    4.0.height,
+                                    Text(
+                                      berita.tanggal,
+                                      textAlign: TextAlign.center,
+                                      style: AppFont.sepuluh,
+                                    ),
+                                    4.0.height,
+                                    Text(
+                                      berita.keterangan,
+                                      textAlign: TextAlign.center,
+                                      style: AppFont.duabelas,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    10.0.height,
+                                    Text(
+                                      'Lihat selengkapnya',
+                                      style: AppFont.duabelas.copyWith(
+                                        color: AppColor.sukses,
+                                        fontStyle: FontStyle.italic,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       );
                     },
-                    child: Card(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.sp),
-                      ),
-                      child: Column(
-                        children: [
-                          Container(
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.vertical(
-                                top: Radius.circular(10.sp),
-                              ),
-                              child: Image.asset(
-                                news["image"]!,height: 140.h, width: double.infinity,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding:
-                                EdgeInsets.symmetric(horizontal: AppDimen.w8),
-                            child: Column(
-                              children: [
-                                6.0.height,
-                                Text(
-                                  news['title']!,
-                                  textAlign: TextAlign.center,
-                                  style: AppFont.nambelasbold,
-                                ),
-                                4.0.height,
-                                Text(
-                                  news['date']!,
-                                  textAlign: TextAlign.center,
-                                  style: AppFont.sepuluh,
-                                ),
-                                4.0.height,
-                                Text(
-                                  news['description']!,
-                                  textAlign: TextAlign.center,
-                                  style: AppFont.duabelas,
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                10.0.height,
-                                Text(
-                                  'Lihat selengkapnya',
-                                  style: AppFont.duabelas.copyWith(
-                                    color: AppColor.sukses,
-                                    fontStyle: FontStyle.italic,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
                   );
                 },
               ),

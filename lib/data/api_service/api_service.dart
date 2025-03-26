@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import '../model/banner.dart';
+import '../model/berita.dart';
 import '../model/galeri.dart';
 import '../model/potensi_desa.dart';
 import '../model/sejarah.dart';
@@ -119,7 +120,6 @@ class ApiService {
     throw Exception('Gagal mengambil data visi misi');
   }
 
-
   // Fungsi Login
   Future<Map<String, dynamic>> login(String nik, String tanggalLahir) async {
     final String url = "$baseUrl/api/login.php";
@@ -144,10 +144,11 @@ class ApiService {
       throw Exception('Terjadi kesalahan: $e');
     }
   }
+
   // Ambil data struktur desa
   Future<List<StrukturDesaModel>> fetchStrukturDesa() async {
-    final response =
-    await http.get(Uri.parse("$baseUrl/api/profile_desa/struktur_desa.php"));
+    final response = await http
+        .get(Uri.parse("$baseUrl/api/profile_desa/struktur_desa.php"));
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
@@ -158,4 +159,19 @@ class ApiService {
     throw Exception('Gagal mengambil data struktur desa');
   }
 
+  // Ambil data berita
+  Future<List<BeritaModel>> fetchBerita() async {
+    final response =
+        await http.get(Uri.parse("$baseUrl/api/informasi_desa/berita.php"));
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      if (data['data'] != null) {
+        return (data['data'] as List)
+            .map((e) => BeritaModel.fromJson(e))
+            .toList();
+      }
+    }
+    throw Exception('Gagal mengambil data berita');
+  }
 }
