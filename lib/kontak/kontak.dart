@@ -3,7 +3,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sipedes/data/extension/extension.dart';
 import 'package:sipedes/data/theme/theme.dart';
 import 'package:sipedes/footer.dart';
-import 'package:sipedes/kontak/pesan_terkirim.dart';
+
+import 'notif.dart';
+
 
 class Kontak extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();

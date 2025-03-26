@@ -5,6 +5,7 @@ import '../model/banner.dart';
 import '../model/berita.dart';
 import '../model/galeri.dart';
 import '../model/kegiatan.dart';
+import '../model/kontak.dart';
 import '../model/pengumuman.dart';
 import '../model/potensi_desa.dart';
 import '../model/sejarah.dart';
@@ -202,5 +203,18 @@ class ApiService {
           .toList();
     }
     throw Exception('Gagal mengambil data pengumuman');
+  }
+  Future<List<Kontak>> fetchKontak() async {
+    final response = await http.get(Uri.parse("$baseUrl/api/kontak.php"));
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      if (data['status'] == 'success') {
+        return (data['data'] as List)
+            .map((json) => Kontak.fromJson(json))
+            .toList();
+      }
+    }
+    throw Exception("Gagal mengambil data kontak");
   }
 }

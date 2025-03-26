@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sipedes/data/extension/extension.dart';
 import 'package:sipedes/data/theme/theme.dart';
 import 'package:sipedes/footer.dart';
 import 'package:sipedes/informasi/pengumuman/detail_pengumuman.dart';
@@ -100,7 +101,7 @@ class _PengumumanState extends State<Pengumuman> {
                 );
               },
             ),
-            SizedBox(height: 100),
+            100.0.height,
             FooterScreen(),
           ],
         ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sipedes/data/extension/extension.dart';
 import '../../data/api_service/api_service.dart';
 import '../../data/model/kegiatan.dart';
 import '../../footer.dart';
@@ -121,7 +122,7 @@ class _KegiatanState extends State<Kegiatan> {
                 );
               },
             ),
-            SizedBox(height: 100),
+            100.0.height,
             FooterScreen(),
           ],
         ),

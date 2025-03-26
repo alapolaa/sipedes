@@ -145,6 +145,7 @@ class _BeritaState extends State<Berita> {
                 },
               ),
             ),
+            50.0.height,
             FooterScreen()
           ],
         ),
