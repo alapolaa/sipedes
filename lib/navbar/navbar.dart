@@ -4,11 +4,9 @@ import 'package:sipedes/informasi/informasi.dart';
 import 'package:sipedes/kontak/kontak.dart';
 import 'package:sipedes/layanan/layanan_publik.dart';
 import 'package:sipedes/profile_desa/profile_desa.dart';
-
-import '../data/model/kontak.dart';
+import '../coba.dart';
 import '../home/home.dart';
 import '../profile/profile.dart';
-import '../tak.dart';
 
 class MenuNavbar extends StatefulWidget {
   @override
@@ -25,7 +23,7 @@ class _MenuNavbarState extends State<MenuNavbar> {
       Center(child: InformasiDesa()),
       Center(child: LayananPublik()),
       Center(child: KontakForm()),
-      Center(child: Profile()),
+      Center(child: ProfilePage()),
     ];
   }
 

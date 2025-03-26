@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sipedes/login/login.dart';
 import 'package:sipedes/navbar/navbar.dart';
 import 'package:sipedes/splash/splash_screen.dart';
 
@@ -30,7 +31,7 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
             primarySwatch: Colors.blue,
           ),
-          home: isLoggedIn ? MenuNavbar() : MenuNavbar(),
+          home: isLoggedIn ? LoginPage() : LoginPage(),  // Perbaikan disini
         );
       },
     );

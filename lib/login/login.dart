@@ -1,150 +1,115 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:intl/intl.dart';
-import 'package:sipedes/data/extension/extension.dart';
-import '../data/api_service/api_service.dart';
-import '../data/theme/app_color.dart';
-import '../data/theme/img_string.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import '../navbar/navbar.dart';
 
-
-class LoginScreen extends StatefulWidget {
+class LoginPage extends StatefulWidget {
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  _LoginPageState createState() => _LoginPageState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
-  final TextEditingController _nikController = TextEditingController();
-  final TextEditingController _dateController = TextEditingController();
-  final ApiService _apiService = ApiService();
-  bool _isLoading = false;
-
-  Future<void> _selectDate(BuildContext context) async {
-    DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(1900),
-      lastDate: DateTime.now(),
-    );
-
-    if (picked != null) {
-      setState(() {
-        _dateController.text = DateFormat('yyyy-MM-dd').format(picked);
-      });
-    }
-  }
+class _LoginPageState extends State<LoginPage> {
+  final TextEditingController nikController = TextEditingController();
+  final TextEditingController tanggalLahirController = TextEditingController();
+  bool isLoading = false;
 
   Future<void> _login() async {
-    if (_nikController.text.isEmpty || _dateController.text.isEmpty) {
+    String nik = nikController.text.trim();
+    String tanggalLahir = tanggalLahirController.text.trim();
+
+    if (nik.isEmpty || tanggalLahir.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Harap isi semua kolom')),
+        SnackBar(content: Text("NIK dan Tanggal Lahir wajib diisi!")),
+      );
+      return;
+    }
+
+    DateTime? parsedDate = DateTime.tryParse(tanggalLahir);
+    if (parsedDate == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Format Tanggal Lahir salah! Gunakan YYYY-MM-DD")),
       );
       return;
     }
 
     setState(() {
-      _isLoading = true;
+      isLoading = true;
     });
 
     try {
-      final result =
-      await _apiService.login(_nikController.text, _dateController.text);
+      final response = await http.post(
+        Uri.parse("http://192.168.20.202/slampang/api/login.php"),
+        body: {"nik": nik, "tanggal_lahir": tanggalLahir},
+      );
 
-      if (result['status'] == 'success') {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => MenuNavbar()),
-        );
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        if (data['status'] == 'success') {
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          await prefs.setBool('isLoggedIn', true);
+          await prefs.setInt('id_user', data['data']['id']); // Simpan ID pengguna
+          await prefs.setString('nik', nik);
+          await prefs.setString('nama', data['data']['nama']);
+
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => MenuNavbar()),
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(data['message'])),
+          );
+        }
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Login gagal: ${result['message']}')),
+          SnackBar(content: Text("Gagal menghubungi server!")),
         );
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Terjadi kesalahan: $e')),
+        SnackBar(content: Text("Terjadi kesalahan: $e")),
       );
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
     }
-
-    setState(() {
-      _isLoading = false;
-    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20.w),
-        child: SingleChildScrollView(
-          child: Center(
-            child: Column(
-              children: [
-                100.h.height,
-                Image.asset(
-                  ImgString.logo,
-                  height: 250.h,
-                  width: 300.w,
-                ),
-                50.h.height,
-                SizedBox(
-                  height: 50.h,
-                  child: TextField(
-                    controller: _nikController,
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
-                      labelText: 'NIK',
-                      hintText: 'Masukkan NIK anda...',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.sp),
-                      ),
-                    ),
-                  ),
-                ),
-                25.h.height,
-                SizedBox(
-                  height: 50.h,
-                  child: TextField(
-                    controller: _dateController,
-                    readOnly: true,
-                    decoration: InputDecoration(
-                      labelText: 'Tanggal Lahir',
-                      hintText: 'YYYY-MM-DD',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.sp),
-                      ),
-                      suffixIcon: IconButton(
-                        icon: const Icon(Icons.calendar_today),
-                        onPressed: () => _selectDate(context),
-                      ),
-                    ),
-                  ),
-                ),
-                75.h.height,
-                SizedBox(
-                  width: double.infinity,
-                  height: 45.h,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColor.appbar,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.r),
-                      ),
-                    ),
-                    onPressed: _isLoading ? null : _login,
-                    child: _isLoading
-                        ? CircularProgressIndicator(color: Colors.white)
-                        : Text(
-                      'Masuk',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
-                20.h.height,
-              ],
+        padding: EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            TextField(
+              controller: nikController,
+              keyboardType: TextInputType.number,
+              decoration: InputDecoration(
+                labelText: "NIK",
+                border: OutlineInputBorder(),
+              ),
             ),
-          ),
+            SizedBox(height: 10),
+            TextField(
+              controller: tanggalLahirController,
+              keyboardType: TextInputType.datetime,
+              decoration: InputDecoration(
+                labelText: "Tanggal Lahir (YYYY-MM-DD)",
+                border: OutlineInputBorder(),
+              ),
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: isLoading ? null : _login,
+              child: isLoading
+                  ? CircularProgressIndicator(color: Colors.white)
+                  : Text("Login"),
+            ),
+          ],
         ),
       ),
     );
