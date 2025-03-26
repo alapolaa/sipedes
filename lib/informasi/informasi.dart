@@ -16,6 +16,7 @@ class InformasiDesa extends StatelessWidget {
       length: 3,
       child: Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           title: Text(
             'Informasi Desa',
             style: AppFont.duapuluhbold.copyWith(

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:http/http.dart' as http;
 import 'package:sipedes/data/extension/extension.dart';
 import 'package:sipedes/data/theme/app_color.dart';
 import 'package:sipedes/data/theme/app_dimen.dart';
 import 'package:sipedes/data/theme/app_font.dart';
 import 'package:sipedes/data/theme/img_string.dart';
-import 'dart:convert';
+
+import '../data/api_service/api_service.dart';
 import '../navbar/navbar.dart';
 import 'package:intl/intl.dart';
 
@@ -20,6 +20,7 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController nikController = TextEditingController();
   final TextEditingController tanggalLahirController = TextEditingController();
   bool isLoading = false;
+  final ApiService _apiService = ApiService();
 
   Future<void> _login() async {
     String nik = nikController.text.trim();
@@ -37,32 +38,22 @@ class _LoginPageState extends State<LoginPage> {
     });
 
     try {
-      final response = await http.post(
-        Uri.parse("http://192.168.20.202/slampang/api/login.php"),
-        body: {"nik": nik, "tanggal_lahir": tanggalLahir},
-      );
+      final data = await _apiService.login(nik, tanggalLahir);
 
-      if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
-        if (data['status'] == 'success') {
-          SharedPreferences prefs = await SharedPreferences.getInstance();
-          await prefs.setBool('isLoggedIn', true);
-          await prefs.setInt('id_user', data['data']['id']);
-          await prefs.setString('nik', nik);
-          await prefs.setString('nama', data['data']['nama']);
+      if (data['status'] == 'success') {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setBool('isLoggedIn', true);
+        await prefs.setInt('id_user', data['data']['id']);
+        await prefs.setString('nik', nik);
+        await prefs.setString('nama', data['data']['nama']);
 
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => MenuNavbar()),
-          );
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(data['message'])),
-          );
-        }
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => MenuNavbar()),
+        );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Gagal menghubungi server!")),
+          SnackBar(content: Text(data['message'])),
         );
       }
     } catch (e) {
@@ -105,55 +96,47 @@ class _LoginPageState extends State<LoginPage> {
                   width: 250.w,
                 ),
                 50.0.height,
-                SizedBox(
-                  height: 50.0.h,
-                  child: TextField(
-                    controller: nikController,
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
-                      labelText: "NIK",
-                      labelStyle:
-                          TextStyle(fontSize: 14, fontStyle: FontStyle.italic),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0.r),
-                      ),
-                      contentPadding: EdgeInsets.symmetric(
-                          vertical: 12.0.w, horizontal: 16.0.h),
+                TextField(
+                  controller: nikController,
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(
+                    labelText: "NIK",
+                    labelStyle:
+                    TextStyle(fontSize: 14, fontStyle: FontStyle.italic),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0.r),
                     ),
-                    style: TextStyle(fontSize: 16.0.sp),
-                    maxLines: 1,
-                    minLines: 1,
+
                   ),
+                  style: TextStyle(fontSize: 16.0.sp),
+                  maxLines: 1,
+                  minLines: 1,
                 ),
                 20.0.height,
-                SizedBox(
-                  height: 50.0.h,
-                  child: TextField(
-                    controller: tanggalLahirController,
-                    readOnly: true,
-                    decoration: InputDecoration(
-                      labelText: "Tanggal Lahir (Tahun-Bulan-Tanggal)",
-                      labelStyle:
-                          TextStyle(fontSize: 14.sp, fontStyle: FontStyle.italic),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0.r),
-                      ),
-                      suffixIcon: IconButton(
-                        icon: Icon(Icons.calendar_today, size: 22.sp),
-                        onPressed: () => _selectDate(context),
-                      ),
-                      contentPadding: EdgeInsets.symmetric(
-                          vertical: 12.0.w, horizontal: 16.0.h),
+                TextField(
+                  controller: tanggalLahirController,
+                  readOnly: true,
+                  decoration: InputDecoration(
+                    labelText: "Tanggal Lahir (Tahun-Bulan-Tanggal)",
+                    labelStyle:
+                    TextStyle(fontSize: 14.sp, fontStyle: FontStyle.italic),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0.r),
                     ),
-                    style: TextStyle(fontSize: 16.0.sp),
-                    maxLines: 1,
-                    minLines: 1,
+                    suffixIcon: IconButton(
+                      icon: Icon(Icons.calendar_today, size: 22.sp),
+                      onPressed: () => _selectDate(context),
+                    ),
+
                   ),
+                  style: TextStyle(fontSize: 16.0.sp),
+                  maxLines: 1,
+                  minLines: 1,
                 ),
                 50.0.height,
                 SizedBox(
                   width: double.infinity,
-                  height: 45.0.h,
+                  height: 50.0.h,
                   child: ElevatedButton(
                     onPressed: isLoading ? null : _login,
                     style: ElevatedButton.styleFrom(
@@ -165,8 +148,8 @@ class _LoginPageState extends State<LoginPage> {
                     child: isLoading
                         ? CircularProgressIndicator(color: Colors.white)
                         : Text("Masuk",
-                            style: AppFont.tombolteks
-                                .copyWith(color: AppColor.white)),
+                        style: AppFont.tombolteks
+                            .copyWith(color: AppColor.white)),
                   ),
                 ),
                 20.0.height,

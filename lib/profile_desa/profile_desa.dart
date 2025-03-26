@@ -13,6 +13,7 @@ class ProfileDesa extends StatelessWidget {
       length: 3,
       child: Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           title: Text(
             'Profile Desa',
             style: AppFont.duapuluhbold.copyWith(

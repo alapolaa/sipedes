@@ -73,7 +73,7 @@ class ApiService {
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
-      print("Decoded JSON: $data"); // Debug JSON
+      print("Decoded JSON: $data");
 
       if (data['status'] == 'success') {
         return (data['data'] as List)
@@ -94,7 +94,7 @@ class ApiService {
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
-      print("Decoded JSON: $data"); // Debug JSON
+      print("Decoded JSON: $data");
 
       if (data['status'] == 'success') {
         return (data['data'] as List)
@@ -114,7 +114,7 @@ class ApiService {
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
-      print("Decoded JSON: $data"); // Debug JSON
+      print("Decoded JSON: $data");
 
       if (data['status'] == 'success') {
         return VisiMisiModel.fromJson(data);
@@ -124,27 +124,17 @@ class ApiService {
   }
 
   // Fungsi Login
+
   Future<Map<String, dynamic>> login(String nik, String tanggalLahir) async {
-    final String url = "$baseUrl/api/login.php";
-    try {
-      final response = await http.post(
-        Uri.parse(url),
-        body: {
-          'nik': nik,
-          'tanggal_lahir': tanggalLahir,
-        },
-      );
+    final response = await http.post(
+      Uri.parse("$baseUrl/api/login.php"),
+      body: {"nik": nik, "tanggal_lahir": tanggalLahir},
+    );
 
-      final data = jsonDecode(response.body);
-      if (data['status'] == 'success') {
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        await prefs.setBool('isLoggedIn', true);
-        await prefs.setString('user_nik', nik);
-      }
-
-      return data;
-    } catch (e) {
-      throw Exception('Terjadi kesalahan: $e');
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    } else {
+      throw Exception('Gagal menghubungi server!');
     }
   }
 
@@ -204,6 +194,7 @@ class ApiService {
     }
     throw Exception('Gagal mengambil data pengumuman');
   }
+  //kontak
   Future<List<Kontak>> fetchKontak() async {
     final response = await http.get(Uri.parse("$baseUrl/api/kontak.php"));
 
@@ -216,5 +207,33 @@ class ApiService {
       }
     }
     throw Exception("Gagal mengambil data kontak");
+  }
+  // Ambil data profil pengguna
+  Future<Map<String, dynamic>?> fetchUserProfile() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    int? userId = prefs.getInt('id_user');
+
+    if (userId == null) {
+      return null;
+    }
+
+    try {
+      final response = await http.get(Uri.parse(
+          '$baseUrl/api/profile/profile.php?id_user=$userId'));
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> result = json.decode(response.body);
+        if (result['status'] == 'success') {
+          return result['data'];
+        } else {
+          return null;
+        }
+      } else {
+        return null;
+      }
+    } catch (e) {
+      print('Error fetching profile: $e');
+      return null;
+    }
   }
 }

@@ -81,6 +81,7 @@ class _KontakFormState extends State<KontakForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: AppColor.appbar,
         title: Text('Kontak',
             style: AppFont.duapuluhbold.copyWith(color: AppColor.white)),

@@ -1,14 +1,12 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:http/http.dart' as http;
 import 'package:sipedes/data/extension/extension.dart';
 import 'package:sipedes/data/theme/app_dimen.dart';
 import 'package:sipedes/data/theme/app_font.dart';
 import 'package:sipedes/login/login.dart';
-
+import '../data/api_service/api_service.dart';
 import '../data/theme/app_color.dart';
+
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -18,6 +16,7 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   Map<String, dynamic>? userData;
   bool isLoading = true;
+  final ApiService _apiService = ApiService();
 
   @override
   void initState() {
@@ -26,36 +25,19 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Future<void> fetchUserProfile() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    int? userId = prefs.getInt('id_user');
+    setState(() {
+      isLoading = true;
+    });
 
-    if (userId == null) {
+    try {
+      userData = await _apiService.fetchUserProfile();
       setState(() {
         isLoading = false;
       });
-      return;
-    }
-
-    try {
-      final response = await http.get(Uri.parse(
-          'http://192.168.20.202/slampang/api/profile/profile.php?id_user=$userId'));
-
-      if (response.statusCode == 200) {
-        final Map<String, dynamic> result = json.decode(response.body);
-        if (result['status'] == 'success') {
-          setState(() {
-            userData = result['data'];
-            isLoading = false;
-          });
-        } else {
-          setState(() {
-            isLoading = false;
-          });
-        }
-      } else {
-        setState(() {
-          isLoading = false;
-        });
+      if (userData == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to fetch profile data.')),
+        );
       }
     } catch (e) {
       setState(() {
@@ -85,56 +67,55 @@ class _ProfilePageState extends State<ProfilePage> {
       body: isLoading
           ? Center(child: CircularProgressIndicator())
           : userData == null
-              ? Center(child: Text('User data not found'))
-              : Center(
-                  child: Container(
-                    padding: EdgeInsets.all(20.sp),
-                    margin: EdgeInsets.all(20.sp),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10.r),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black26,
-                          blurRadius: 10,
-                          spreadRadius: 2,
-                          offset: Offset(0, 4),
-                        ),
-                      ],
-                    ),
-
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        _buildInfoRow('Nama', userData!['nama']),
-                        _buildInfoRow('NIK', userData!['nik']),
-                        _buildInfoRow(
-                            'Tanggal Lahir', userData!['tanggal_lahir']),
-                        _buildInfoRow('Alamat', userData!['alamat']),
-                        _buildInfoRow('No HP', userData!['no_hp']),
-                        _buildInfoRow('Email', userData!['email']),
-                        30.0.height,
-                        SizedBox(
-                          width: double.infinity,
-                          height: 45.0.h,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.grey,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.0.r),
-                              ),
-                            ),
-                            onPressed: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginPage()));
-                            },
-                            child: Text("Logout",style: AppFont.nambelas.copyWith(color: Colors.white),),
-                          ),
-                        )
-                      ],
+          ? Center(child: Text('User data not found'))
+          : Center(
+        child: Container(
+          padding: EdgeInsets.all(20.sp),
+          margin: EdgeInsets.all(20.sp),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10.r),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black26,
+                blurRadius: 10,
+                spreadRadius: 2,
+                offset: Offset(0, 4),
+              ),
+            ],
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              _buildInfoRow('Nama', userData!['nama']),
+              _buildInfoRow('NIK', userData!['nik']),
+              _buildInfoRow(
+                  'Tanggal Lahir', userData!['tanggal_lahir']),
+              _buildInfoRow('Alamat', userData!['alamat']),
+              _buildInfoRow('No HP', userData!['no_hp']),
+              _buildInfoRow('Email', userData!['email']),
+              30.0.height,
+              SizedBox(
+                width: double.infinity,
+                height: 45.0.h,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.grey,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0.r),
                     ),
                   ),
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginPage()));
+                  },
+                  child: Text("Logout",style: AppFont.nambelas.copyWith(color: Colors.white),),
                 ),
+              )
+            ],
+          ),
+        ),
+      ),
     );
   }
 
