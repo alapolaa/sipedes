@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:sipedes/layanan/tambah_surat.dart';
 import '../data/api_service/test.dart';
 import '../data/model/surat.dart';
-
 
 class SuratScreen extends StatefulWidget {
   final String idPengguna;
@@ -24,7 +24,10 @@ class _SuratScreenState extends State<SuratScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Daftar Pengajuan Surat")),
+      appBar: AppBar(
+        title: Text("Daftar Pengajuan Surat"),
+        automaticallyImplyLeading: false,
+      ),
       body: FutureBuilder<List<Surat>>(
         future: futureSurat,
         builder: (context, snapshot) {
@@ -44,12 +47,20 @@ class _SuratScreenState extends State<SuratScreen> {
               return Card(
                 child: ListTile(
                   title: Text(surat.jenisSurat),
-                  subtitle: Text("Status: ${surat.status}\nTanggal: ${surat.tanggalPengajuan}"),
+                  subtitle: Text(
+                      "Status: ${surat.status}\nTanggal: ${surat.tanggalPengajuan}"),
                 ),
               );
             },
           );
         },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+        Navigator.push(context, MaterialPageRoute(builder: (context)=>TambahSurat()));
+        },
+        child: Icon(Icons.add),
+        tooltip: "Tambah Surat",
       ),
     );
   }
