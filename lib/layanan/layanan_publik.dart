@@ -4,64 +4,50 @@ import '../data/model/surat.dart';
 
 
 class SuratScreen extends StatefulWidget {
+  final String idPengguna;
+
+  const SuratScreen({super.key, required this.idPengguna});
+
   @override
   _SuratScreenState createState() => _SuratScreenState();
 }
 
 class _SuratScreenState extends State<SuratScreen> {
-  final ApiService apiService = ApiService();
-  List<Surat> suratList = [];
-  bool isLoading = true;
-  String sessionId = '33c9d1d4f89bbc4c7d31270bfb51ccef'; // Sesuaikan dengan PHPSESSID yang didapat
+  late Future<List<Surat>> futureSurat;
 
   @override
   void initState() {
     super.initState();
-    fetchSurat();
-  }
-
-  Future<void> fetchSurat() async {
-    try {
-      List<Surat> data = await apiService.fetchSurat(sessionId);
-      setState(() {
-        suratList = data;
-        isLoading = false;
-      });
-    } catch (e) {
-      setState(() {
-        isLoading = false;
-      });
-      print('Error: $e');
-    }
+    futureSurat = ApiService().fetchSuratByUserId(widget.idPengguna);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Pengajuan Surat")),
-      body: isLoading
-          ? Center(child: CircularProgressIndicator())
-          : suratList.isEmpty
-          ? Center(child: Text("Tidak ada data surat"))
-          : ListView.builder(
-        itemCount: suratList.length,
-        itemBuilder: (context, index) {
-          final surat = suratList[index];
-          return Card(
-            margin: EdgeInsets.all(10),
-            child: ListTile(
-              title: Text(surat.jenisSurat),
-              subtitle: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text("Status: ${surat.status}"),
-                  Text("Tanggal Pengajuan: ${surat.tanggalPengajuan}"),
-                  Text("Tanggal Selesai: ${surat.tanggalSelesai}"),
-                  if (surat.status == "Ditolak")
-                    Text("Alasan: ${surat.alasanPenolakan}", style: TextStyle(color: Colors.red)),
-                ],
-              ),
-            ),
+      appBar: AppBar(title: Text("Daftar Pengajuan Surat")),
+      body: FutureBuilder<List<Surat>>(
+        future: futureSurat,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text("Error: ${snapshot.error}"));
+          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return Center(child: Text("Tidak ada data surat"));
+          }
+
+          final suratList = snapshot.data!;
+          return ListView.builder(
+            itemCount: suratList.length,
+            itemBuilder: (context, index) {
+              final surat = suratList[index];
+              return Card(
+                child: ListTile(
+                  title: Text(surat.jenisSurat),
+                  subtitle: Text("Status: ${surat.status}\nTanggal: ${surat.tanggalPengajuan}"),
+                ),
+              );
+            },
           );
         },
       ),

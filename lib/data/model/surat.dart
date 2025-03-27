@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 class Surat {
   final String id;
   final String jenisSurat;
@@ -26,9 +24,5 @@ class Surat {
       tanggalSelesai: json['tanggal_selesai'],
       alasanPenolakan: json['alasan_penolakan'],
     );
-  }
-
-  static List<Surat> fromJsonList(List<dynamic> jsonList) {
-    return jsonList.map((e) => Surat.fromJson(e)).toList();
   }
 }

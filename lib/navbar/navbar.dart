@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sipedes/data/theme/theme.dart';
 import 'package:sipedes/informasi/informasi.dart';
 import 'package:sipedes/kontak/kontak.dart';
@@ -7,6 +8,7 @@ import 'package:sipedes/profile_desa/profile_desa.dart';
 import '../home/home.dart';
 import '../profile/profile.dart';
 
+
 class MenuNavbar extends StatefulWidget {
   @override
   _MenuNavbarState createState() => _MenuNavbarState();
@@ -14,16 +16,29 @@ class MenuNavbar extends StatefulWidget {
 
 class _MenuNavbarState extends State<MenuNavbar> {
   int _selectedIndex = 0;
+  int? _idUser;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserId();
+  }
+
+  Future<void> _loadUserId() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _idUser = prefs.getInt('id_user');
+    });
+  }
 
   List<Widget> _buildScreens() {
     return [
-      Center(child: HomeScreen()),
-      Center(child: ProfileDesa()),
-      Center(child: InformasiDesa()),
-      Center(child: SuratScreen()),
-      //Center(child: LayananPublik()),
-      Center(child: KontakForm()),
-      Center(child: ProfilePage()),
+      HomeScreen(),
+      ProfileDesa(),
+      InformasiDesa(),
+      _idUser != null ? SuratScreen(idPengguna: _idUser.toString()) : Center(child: CircularProgressIndicator()),
+      KontakForm(),
+      ProfilePage(),
     ];
   }
 

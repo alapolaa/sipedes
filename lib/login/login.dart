@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sipedes/data/api_service/api_service.dart';
 import 'package:sipedes/data/extension/extension.dart';
 import 'package:sipedes/data/theme/app_color.dart';
 import 'package:sipedes/data/theme/app_dimen.dart';
 import 'package:sipedes/data/theme/app_font.dart';
 import 'package:sipedes/data/theme/img_string.dart';
-
-import '../data/api_service/api_service.dart';
-import '../navbar/navbar.dart';
 import 'package:intl/intl.dart';
+import '../layanan/layanan_publik.dart';
+import '../navbar/navbar.dart';
+
 
 class LoginPage extends StatefulWidget {
   @override
@@ -50,7 +51,7 @@ class _LoginPageState extends State<LoginPage> {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => MenuNavbar()),
-        );
+        ).then((_) => _navigateToSuratScreen());
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(data['message'])),
@@ -64,6 +65,24 @@ class _LoginPageState extends State<LoginPage> {
       setState(() {
         isLoading = false;
       });
+    }
+  }
+
+  Future<void> _navigateToSuratScreen() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    int? idUser = prefs.getInt('id_user');
+
+    if (idUser != null) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => SuratScreen(idPengguna: idUser.toString()),
+        ),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("ID Pengguna tidak ditemukan!")),
+      );
     }
   }
 
@@ -106,7 +125,6 @@ class _LoginPageState extends State<LoginPage> {
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0.r),
                     ),
-
                   ),
                   style: TextStyle(fontSize: 18.0.sp),
                   maxLines: 1,
@@ -127,7 +145,6 @@ class _LoginPageState extends State<LoginPage> {
                       icon: Icon(Icons.calendar_today, size: 22.sp),
                       onPressed: () => _selectDate(context),
                     ),
-
                   ),
                   style: TextStyle(fontSize: 18.0.sp),
                   maxLines: 1,
@@ -148,11 +165,12 @@ class _LoginPageState extends State<LoginPage> {
                     child: isLoading
                         ? CircularProgressIndicator(color: Colors.white)
                         : Text("Masuk",
-                        style: AppFont.tombolteks
-                            .copyWith(color: AppColor.white)),
+                        style:
+                        AppFont.tombolteks.copyWith(color: AppColor.white)),
                   ),
                 ),
                 20.0.height,
+
               ],
             ),
           ),

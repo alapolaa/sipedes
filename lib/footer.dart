@@ -23,7 +23,7 @@ class FooterScreen extends StatelessWidget {
           4.0.height,
           Text(
             "Kecamatan Tlanakan, Kabupaten Pamekasan, Jawa Timur",
-            style: AppFont.duabelas,
+            style: AppFont.duabelas.copyWith(fontStyle: FontStyle.italic),
           ),
           10.0.height,
           Row(
