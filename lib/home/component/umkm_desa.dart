@@ -6,7 +6,6 @@ import 'package:sipedes/data/theme/theme.dart';
 import '../../data/api_service/api_service.dart';
 import '../../data/model/umkm.dart';
 
-
 class UmkmDesa extends StatefulWidget {
   @override
   _UmkmDesaState createState() => _UmkmDesaState();
@@ -26,11 +25,11 @@ class _UmkmDesaState extends State<UmkmDesa> {
     return Padding(
       padding: EdgeInsets.all(20.sp),
       child: Column(
-
         children: [
           Text(
-            "UMKM Desa",textAlign: TextAlign.center,
-            style: AppFont.duapuluhbold,
+            "UMKM Desa",
+            textAlign: TextAlign.center,
+            style: AppFont.duadua,
           ),
           5.0.height,
           FutureBuilder<List<UmkmDesaModel>>(
@@ -39,31 +38,34 @@ class _UmkmDesaState extends State<UmkmDesa> {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Center(child: CircularProgressIndicator());
               } else if (snapshot.hasError) {
-                return Center(child: Text("Terjadi kesalahan: \${snapshot.error}"));
+                return Center(
+                    child: Text("Terjadi kesalahan: \${snapshot.error}"));
               } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
                 return Center(child: Text("Data tidak tersedia"));
               }
 
               final umkmList = snapshot.data!;
               return Column(
-                children: umkmList.map((umkm) => Padding(
-                  padding: EdgeInsets.symmetric(vertical: 5.h),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        umkm.title,
-                        style: AppFont.tombolteks,
-                      ),
-                      5.0.height,
-                      Text(
-                        umkm.keterangan,
-                        style: AppFont.duabelas,
-                      ),
-                      10.0.height,
-                    ],
-                  ),
-                )).toList(),
+                children: umkmList
+                    .map((umkm) => Padding(
+                          padding: EdgeInsets.symmetric(vertical: 5.h),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                umkm.title,
+                                style: AppFont.duapuluhbold,
+                              ),
+                              5.0.height,
+                              Text(
+                                umkm.keterangan,
+                                style: AppFont.nambelas,
+                              ),
+                              10.0.height,
+                            ],
+                          ),
+                        ))
+                    .toList(),
               );
             },
           ),

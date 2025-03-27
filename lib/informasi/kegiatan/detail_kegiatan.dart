@@ -14,7 +14,7 @@ class DetailKegiatanScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           "Detail Kegiatan",
-          style: AppFont.duapuluhbold.copyWith(color: AppColor.white),
+          style: AppFont.duaempat.copyWith(color: AppColor.white),
         ),
         backgroundColor: AppColor.appbar,
         centerTitle: true,
@@ -80,21 +80,21 @@ class DetailKegiatanScreen extends StatelessWidget {
                           children: [
                             Text(
                               data['kegiatan']!,
-                              style: AppFont.nambelas,
+                              style: AppFont.tombolteks,
                             ),
                             SizedBox(height: 5.0.h),
                             Text("Tanggal Mulai: ${data['mulai']}",
-                                style: AppFont.sepuluh),
+                                style: AppFont.duabelas),
                             SizedBox(height: 2.0.h),
                             Text(
                               "Tanggal Selesai: ${data['selesai']}",
-                              style: AppFont.sepuluh,
+                              style: AppFont.duabelas,
                             ),
                             SizedBox(height: 2.0.h),
                             Text("Lokasi: ${data['lokasi']}",
-                                style: AppFont.sepuluh),
+                                style: AppFont.duabelas),
                             SizedBox(height: 5.0.h),
-                            Text(data['keterangan']!),
+                            Text(data['keterangan']!,style: AppFont.nambelas,),
                           ],
                         ),
                       ),

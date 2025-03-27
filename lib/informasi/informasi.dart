@@ -19,7 +19,7 @@ class InformasiDesa extends StatelessWidget {
           automaticallyImplyLeading: false,
           title: Text(
             'Informasi Desa',
-            style: AppFont.duapuluhbold.copyWith(
+            style: AppFont.duaempat.copyWith(
               color: AppColor.white,
             ),
           ),

@@ -41,7 +41,7 @@ class _SemuaGaleryState extends State<SemuaGalery> {
       appBar: AppBar(
         title: Text(
           "Semua Galery",
-          style: AppFont.duapuluhbold.copyWith(
+          style: AppFont.duaempat.copyWith(
             color: AppColor.white,
           ),
         ),
@@ -59,7 +59,7 @@ class _SemuaGaleryState extends State<SemuaGalery> {
             children: [
               Text(
                 "Desa Larangan Slampar memiliki galeri visual yang menampilkan keindahan alam, kegiatan masyarakat, serta produk lokal unggulan melalui kumpulan gambar yang dapat menggambarkan identitas dan potensi desa secara visual.",
-                style: AppFont.duabelas,
+                style: AppFont.nambelas,
               ),
               galleries.isEmpty
                   ? const Center(child: CircularProgressIndicator())

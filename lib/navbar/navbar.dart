@@ -20,7 +20,8 @@ class _MenuNavbarState extends State<MenuNavbar> {
       Center(child: HomeScreen()),
       Center(child: ProfileDesa()),
       Center(child: InformasiDesa()),
-      Center(child: LayananPublik()),
+      Center(child: SuratScreen()),
+      //Center(child: LayananPublik()),
       Center(child: KontakForm()),
       Center(child: ProfilePage()),
     ];

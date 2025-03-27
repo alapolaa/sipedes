@@ -59,7 +59,7 @@ class _ProfilePageState extends State<ProfilePage> {
         title: Center(
           child: Text(
             'Profile',
-            style: AppFont.duapuluhbold.copyWith(color: AppColor.white),
+            style: AppFont.duaempat.copyWith(color: AppColor.white),
           ),
         ),
         backgroundColor: AppColor.appbar,

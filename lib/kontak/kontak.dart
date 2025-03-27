@@ -84,7 +84,7 @@ class _KontakFormState extends State<KontakForm> {
         automaticallyImplyLeading: false,
         backgroundColor: AppColor.appbar,
         title: Text('Kontak',
-            style: AppFont.duapuluhbold.copyWith(color: AppColor.white)),
+            style: AppFont.duaempat.copyWith(color: AppColor.white)),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -97,7 +97,7 @@ class _KontakFormState extends State<KontakForm> {
                   'silakan sampaikan melalui kontak resmi desa. Masukan Anda sangat berarti untuk '
                   'mendukung pengembangan dan kemajuan desa secara bersama-sama.',
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 12, color: Colors.black87),
+              style: TextStyle(fontSize: 16.sp, color: Colors.black87),
             ),
             Padding(
               padding: EdgeInsets.symmetric(

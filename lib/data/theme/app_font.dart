@@ -6,6 +6,10 @@ class AppFont {
     fontSize: 20,
     fontWeight: FontWeight.w700,
   );
+  static const TextStyle  duadua = TextStyle(
+    fontSize: 22,
+    fontWeight: FontWeight.w700,
+  );
   static const TextStyle  duaempat = TextStyle(
     fontSize: 24,
     fontWeight: FontWeight.w700,

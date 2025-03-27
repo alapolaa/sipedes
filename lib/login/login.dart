@@ -102,13 +102,13 @@ class _LoginPageState extends State<LoginPage> {
                   decoration: InputDecoration(
                     labelText: "NIK",
                     labelStyle:
-                    TextStyle(fontSize: 14, fontStyle: FontStyle.italic),
+                    TextStyle(fontSize: 16.sp, fontStyle: FontStyle.italic),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0.r),
                     ),
 
                   ),
-                  style: TextStyle(fontSize: 16.0.sp),
+                  style: TextStyle(fontSize: 18.0.sp),
                   maxLines: 1,
                   minLines: 1,
                 ),
@@ -119,7 +119,7 @@ class _LoginPageState extends State<LoginPage> {
                   decoration: InputDecoration(
                     labelText: "Tanggal Lahir (Tahun-Bulan-Tanggal)",
                     labelStyle:
-                    TextStyle(fontSize: 14.sp, fontStyle: FontStyle.italic),
+                    TextStyle(fontSize: 16.sp, fontStyle: FontStyle.italic),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0.r),
                     ),
@@ -129,7 +129,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
 
                   ),
-                  style: TextStyle(fontSize: 16.0.sp),
+                  style: TextStyle(fontSize: 18.0.sp),
                   maxLines: 1,
                   minLines: 1,
                 ),

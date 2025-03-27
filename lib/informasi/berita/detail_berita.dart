@@ -16,7 +16,7 @@ class DetailBerita extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           "Detail Berita",
-          style: AppFont.duapuluhbold.copyWith(color: AppColor.white),
+          style: AppFont.duaempat.copyWith(color: AppColor.white),
         ),
         backgroundColor: AppColor.appbar,
         centerTitle: true,
@@ -77,14 +77,14 @@ class DetailBerita extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(news['title']!, style: AppFont.nambelas),
+                            Text(news['title']!, style: AppFont.tombolteks),
                             5.0.height,
                             Text(
                               news['date']!,
                               style: AppFont.sepuluh,
                             ),
                             15.0.height,
-                            Text(news['description']!, style: AppFont.duabelas),
+                            Text(news['description']!, style: AppFont.nambelas),
                           ],
                         ),
                       ),

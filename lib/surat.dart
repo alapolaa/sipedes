@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import '../data/api_service/test.dart';
-import '../data/model/surat.dart';
-
+import 'data/api_service/test.dart';
+import 'data/model/surat.dart';
 
 class SuratScreen extends StatefulWidget {
   @override

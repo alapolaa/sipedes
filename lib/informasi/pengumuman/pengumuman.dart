@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sipedes/data/extension/extension.dart';
 import 'package:sipedes/data/theme/theme.dart';
 import 'package:sipedes/footer.dart';
@@ -30,18 +31,18 @@ class _PengumumanState extends State<Pengumuman> {
               padding: const EdgeInsets.all(10.0),
               child: Text(
                 "Pengumuman",
-                style: AppFont.duapuluhbold,
+                style: AppFont.duaempat,
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
+              padding:  EdgeInsets.symmetric(horizontal: 10.sp),
               child: Text(
                 'Menyajikan informasi terbaru tentang peristiwa dan Pengumuman terkini dari Desa Larangan Slampar.',
-                style: AppFont.duabelas,
+                style: AppFont.nambelas,
                 textAlign: TextAlign.center,
               ),
             ),
-            SizedBox(height: 10),
+            SizedBox(height: 10.h),
             FutureBuilder<List<PengumumanModel>>(
               future: futurePengumuman,
               builder: (context, snapshot) {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sipedes/data/extension/extension.dart';
 import '../../data/api_service/api_service.dart';
 import '../../data/model/kegiatan.dart';
@@ -26,17 +27,17 @@ class _KegiatanState extends State<Kegiatan> {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.all(10.0),
+              padding:  EdgeInsets.all(10.0.sp),
               child: Text(
                 "Kegiatan Desa",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 22.sp, fontWeight: FontWeight.bold),
               ),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10),
               child: Text(
                 'Menyajikan informasi terbaru tentang peristiwa dan kegiatan terkini dari desa.',
-                style: TextStyle(fontSize: 12),
+                style: TextStyle(fontSize: 16.sp),
                 textAlign: TextAlign.center,
               ),
             ),

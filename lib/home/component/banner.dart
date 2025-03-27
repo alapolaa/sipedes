@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sipedes/data/extension/extension.dart';
 import 'package:sipedes/data/theme/app_font.dart';
 import '../../data/api_service/api_service.dart';
 import '../../data/model/banner.dart';
@@ -72,15 +73,15 @@ class _BannerPageState extends State<BannerPage> {
                         Text(
                           banner.judul,
                           textAlign: TextAlign.center,
-                          style: AppFont.duapuluhbold.copyWith(
+                          style: AppFont.duadua.copyWith(
                             color: Colors.white,
                           ),
                         ),
-                        const SizedBox(height: 10),
+                        10.0.height,
                         Text(
                           banner.keterangan,
                           textAlign: TextAlign.center,
-                          style: AppFont.duabelas.copyWith(
+                          style: AppFont.empatbelas.copyWith(
                             color: Colors.white70,
                           ),
                         ),

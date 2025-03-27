@@ -45,11 +45,11 @@ class _GalleryPageState extends State<GalleryPage> {
         children: [
           Text(
             "Gallery",textAlign: TextAlign.center,
-            style: AppFont.duapuluhbold,
+            style: AppFont.duadua,
           ),   5.0.height,
           Text(
             "Desa Larangan Slampar memiliki galeri visual yang menampilkan keindahan alam, kegiatan masyarakat, serta produk lokal unggulan melalui kumpulan gambar yang dapat menggambarkan identitas dan potensi desa secara visual.",
-            style: AppFont.duabelas,
+            style: AppFont.nambelas,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
@@ -63,7 +63,7 @@ class _GalleryPageState extends State<GalleryPage> {
                   style: TextStyle(
                     fontStyle: FontStyle.italic,
                     color: AppColor.sukses,
-                    fontSize: 10,
+                    fontSize: 14.sp,
                     fontWeight: FontWeight.bold,
                   ),
                 ),

@@ -19,7 +19,7 @@ class HomeScreen extends StatelessWidget {
         title: Center(
           child: Text(
             'LARANGAN SLAMPAR',
-            style: AppFont.duapuluhbold.copyWith(color: AppColor.white),
+            style: AppFont.duaempat.copyWith(color: AppColor.white),
           ),
         ),
         backgroundColor: AppColor.appbar,

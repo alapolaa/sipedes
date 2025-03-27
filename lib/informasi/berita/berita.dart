@@ -33,13 +33,16 @@ class _BeritaState extends State<Berita> {
               "Berita",
               style: AppFont.duapuluhbold,
             ),
-            10.0.height,
-            Text(
-              'Menyajikan informasi terbaru tentang peristiwa dan berita terkini dari Desa Larangan Slampar.',
-              style: AppFont.duabelas,
-              textAlign: TextAlign.center,
+
+            Padding(
+              padding:  EdgeInsets.all(10.0.sp),
+              child: Text(
+                'Menyajikan informasi terbaru tentang peristiwa dan berita terkini dari Desa Larangan Slampar.',
+                style: AppFont.nambelas,
+                textAlign: TextAlign.center,
+              ),
             ),
-            8.0.height,
+
             Padding(
               padding: EdgeInsets.all(10.0.sp),
               child: FutureBuilder<List<BeritaModel>>(
@@ -74,7 +77,7 @@ class _BeritaState extends State<Berita> {
                               builder: (context) => DetailBerita(
                                 news: {
                                   "image": berita
-                                      .gambar, // Sesuaikan dengan data berita
+                                      .gambar,
                                   "title": berita.judul,
                                   "date": berita.tanggal,
                                   "description": berita.keterangan,
@@ -109,19 +112,19 @@ class _BeritaState extends State<Berita> {
                                     Text(
                                       berita.judul,
                                       textAlign: TextAlign.center,
-                                      style: AppFont.nambelasbold,
+                                      style: AppFont.tombolteks,
                                     ),
                                     4.0.height,
                                     Text(
                                       berita.tanggal,
                                       textAlign: TextAlign.center,
-                                      style: AppFont.sepuluh,
+                                      style: AppFont.duabelas,
                                     ),
                                     4.0.height,
                                     Text(
                                       berita.keterangan,
                                       textAlign: TextAlign.center,
-                                      style: AppFont.duabelas,
+                                      style: AppFont.nambelas,
                                       maxLines: 2,
                                       overflow: TextOverflow.ellipsis,
                                     ),

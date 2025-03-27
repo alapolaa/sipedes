@@ -16,7 +16,7 @@ class ProfileDesa extends StatelessWidget {
           automaticallyImplyLeading: false,
           title: Text(
             'Profile Desa',
-            style: AppFont.duapuluhbold.copyWith(
+            style: AppFont.duaempat.copyWith(
               color: AppColor.white,
             ),
           ),

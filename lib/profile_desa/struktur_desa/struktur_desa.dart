@@ -91,15 +91,15 @@ class _StrukturDesaViewState extends State<StrukturDesaView> {
                                   children: [
                                     Text(
                                       person.nama,
-                                      style: const TextStyle(
-                                        fontSize: 16.0,
+                                      style:  TextStyle(
+                                        fontSize: 18.0.sp,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
                                     Text(
                                       person.jabatan,
-                                      style: const TextStyle(
-                                        fontSize: 14.0,
+                                      style:  TextStyle(
+                                        fontSize: 16.0.sp,
                                         color: Colors.black54,
                                       ),
                                     ),

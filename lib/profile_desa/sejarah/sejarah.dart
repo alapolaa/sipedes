@@ -68,7 +68,7 @@ class _SejarahViewState extends State<SejarahView> {
                 padding: EdgeInsets.symmetric(horizontal: 20.w),
                 child: Text(
                   sejarah.keterangan,
-                  style: AppFont.duabelas,
+                  style: AppFont.nambelas,
                 ),
               ),
               100.0.height,

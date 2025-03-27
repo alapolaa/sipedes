@@ -31,7 +31,7 @@ class _PotensiDesaState extends State<PotensiDesa> {
           Text(
             "Potensi Desa",
             textAlign: TextAlign.center,
-            style: AppFont.duapuluhbold,
+            style: AppFont.duadua,
           ),
           10.0.height,
           FutureBuilder<List<PotensiDesaModel>>(
@@ -59,7 +59,7 @@ class _PotensiDesaState extends State<PotensiDesa> {
                   10.0.height,
                   Text(
                     potensiDesa.keterangan,
-                    style: AppFont.duabelas,
+                    style: AppFont.nambelas,
                   ),
 
                 ],

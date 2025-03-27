@@ -1,26 +1,26 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import '../model/banner.dart';
+
+import '../model/surat.dart';
 
 class ApiService {
-  static const String baseUrl = "http://192.168.20.202/slampang";
-  static const String baseImageUrl = "$baseUrl/uploads";
+  static const String baseUrl =
+      'http://192.168.20.202/slampang/api/layanan_publik/surat.php';
 
-  // Ambil data banner
-  Future<List<BannerModel>> fetchBanners() async {
-    final response = await http.get(Uri.parse("$baseUrl/api/home/banner.php"));
+  Future<List<Surat>> fetchSurat(String sessionId) async {
+    final response = await http.get(
+      Uri.parse(baseUrl),
+      headers: {
+        'Cookie': 'PHPSESSID=$sessionId',
+      },
+    );
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
       if (data['status'] == 'success') {
-        return (data['data'] as List)
-            .map((e) => BannerModel.fromJson(e))
-            .toList();
+        return Surat.fromJsonList(data['pengajuan_surat']);
       }
     }
-    throw Exception('Gagal mengambil data banner');
+    throw Exception('Gagal mengambil data surat');
   }
-
-
-
 }
