@@ -51,7 +51,7 @@ class _TambahSuratState extends State<TambahSurat> {
       Uri.parse('http://192.168.20.202/slampang/api/domisili.php'),
     );
 
-    request.fields['id_pengguna'] = idPengguna.toString(); // Menggunakan ID dari SharedPreferences
+    request.fields['id_pengguna'] = idPengguna.toString();
     request.fields['nama_lengkap'] = namaController.text;
     request.fields['nik'] = nikController.text;
     request.fields['alamat'] = alamatController.text;
@@ -74,6 +74,7 @@ class _TambahSuratState extends State<TambahSurat> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Pengajuan berhasil!')),
       );
+      Navigator.pop(context); // Tambahkan baris ini
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Gagal mengajukan surat!')),
