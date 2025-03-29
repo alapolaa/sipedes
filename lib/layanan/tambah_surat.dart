@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:file_picker/file_picker.dart';
 
 import 'package:intl/intl.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 
 class TambahSurat extends StatefulWidget {
   @override
@@ -36,12 +36,22 @@ class _TambahSuratState extends State<TambahSurat> {
   Future<void> _submitForm() async {
     if (!_formKey.currentState!.validate()) return;
 
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    int? idPengguna = prefs.getInt('id_user');
+
+    if (idPengguna == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('ID Pengguna tidak ditemukan. Silakan login kembali.')),
+      );
+      return;
+    }
+
     var request = http.MultipartRequest(
       'POST',
       Uri.parse('http://192.168.20.202/slampang/api/domisili.php'),
     );
 
-    request.fields['id_pengguna'] = '13';
+    request.fields['id_pengguna'] = idPengguna.toString(); // Menggunakan ID dari SharedPreferences
     request.fields['nama_lengkap'] = namaController.text;
     request.fields['nik'] = nikController.text;
     request.fields['alamat'] = alamatController.text;
@@ -53,7 +63,8 @@ class _TambahSuratState extends State<TambahSurat> {
 
     if (filePendukung != null) {
       request.files.add(
-        await http.MultipartFile.fromPath('file_pendukung', filePendukung!.path),
+        await http.MultipartFile.fromPath(
+            'file_pendukung', filePendukung!.path),
       );
     }
 
@@ -80,17 +91,30 @@ class _TambahSuratState extends State<TambahSurat> {
           key: _formKey,
           child: Column(
             children: [
-              TextFormField(controller: namaController, decoration: InputDecoration(labelText: 'Nama Lengkap')),
-              TextFormField(controller: nikController, decoration: InputDecoration(labelText: 'NIK'), keyboardType: TextInputType.number),
-              TextFormField(controller: alamatController, decoration: InputDecoration(labelText: 'Alamat')),
+              TextFormField(
+                  controller: namaController,
+                  decoration: InputDecoration(labelText: 'Nama Lengkap')),
+              TextFormField(
+                  controller: nikController,
+                  decoration: InputDecoration(labelText: 'NIK'),
+                  keyboardType: TextInputType.number),
+              TextFormField(
+                  controller: alamatController,
+                  decoration: InputDecoration(labelText: 'Alamat')),
               DropdownButtonFormField<String>(
                 value: agama,
-                items: ['Islam', 'Kristen', 'Hindu', 'Budha'].map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
+                items: ['Islam', 'Kristen', 'Hindu', 'Budha']
+                    .map((e) => DropdownMenuItem(value: e, child: Text(e)))
+                    .toList(),
                 onChanged: (val) => setState(() => agama = val),
                 decoration: InputDecoration(labelText: 'Agama'),
               ),
-              TextFormField(controller: pekerjaanController, decoration: InputDecoration(labelText: 'Pekerjaan')),
-              TextFormField(controller: keperluanController, decoration: InputDecoration(labelText: 'Keperluan')),
+              TextFormField(
+                  controller: pekerjaanController,
+                  decoration: InputDecoration(labelText: 'Pekerjaan')),
+              TextFormField(
+                  controller: keperluanController,
+                  decoration: InputDecoration(labelText: 'Keperluan')),
               TextFormField(
                 controller: tanggalLahirController,
                 decoration: InputDecoration(labelText: 'Tanggal Lahir'),
@@ -103,12 +127,16 @@ class _TambahSuratState extends State<TambahSurat> {
                     lastDate: DateTime.now(),
                   );
                   if (picked != null) {
-                    setState(() => tanggalLahirController.text = DateFormat('yyyy-MM-dd').format(picked));
+                    setState(() => tanggalLahirController.text =
+                        DateFormat('yyyy-MM-dd').format(picked));
                   }
                 },
               ),
-              TextFormField(controller: tempatLahirController, decoration: InputDecoration(labelText: 'Tempat Lahir')),
-              ElevatedButton(onPressed: _pickFile, child: Text('Pilih File Pendukung')),
+              TextFormField(
+                  controller: tempatLahirController,
+                  decoration: InputDecoration(labelText: 'Tempat Lahir')),
+              ElevatedButton(
+                  onPressed: _pickFile, child: Text('Pilih File Pendukung')),
               SizedBox(height: 16),
               ElevatedButton(onPressed: _submitForm, child: Text('Submit')),
             ],
