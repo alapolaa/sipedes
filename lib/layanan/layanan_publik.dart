@@ -14,11 +14,27 @@ class SuratScreen extends StatefulWidget {
 
 class _SuratScreenState extends State<SuratScreen> {
   late Future<List<Surat>> futureSurat;
+  bool _isLoading = false;
 
   @override
   void initState() {
     super.initState();
-    futureSurat = ApiService().fetchSuratByUserId(widget.idPengguna);
+    _refreshSurat();
+  }
+
+  Future<void> _refreshSurat() async {
+    setState(() {
+      _isLoading = true;
+      futureSurat = ApiService().fetchSuratByUserId(widget.idPengguna);
+    });
+
+    try {
+      await futureSurat;
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
   }
 
   @override
@@ -28,11 +44,13 @@ class _SuratScreenState extends State<SuratScreen> {
         title: Text("Daftar Pengajuan Surat"),
         automaticallyImplyLeading: false,
       ),
-      body: FutureBuilder<List<Surat>>(
+      body: _isLoading
+          ? Center(child: CircularProgressIndicator())
+          : FutureBuilder<List<Surat>>(
         future: futureSurat,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return Center(child: Text(""));
           } else if (snapshot.hasError) {
             return Center(child: Text("Error: ${snapshot.error}"));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
@@ -56,8 +74,14 @@ class _SuratScreenState extends State<SuratScreen> {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context)=>TambahSurat()));
+        onPressed: () async {
+          final result = await Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => TambahSurat()),
+          );
+          if (result == true) {
+            _refreshSurat();
+          }
         },
         child: Icon(Icons.add),
         tooltip: "Tambah Surat",

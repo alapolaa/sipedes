@@ -74,7 +74,7 @@ class _TambahSuratState extends State<TambahSurat> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Pengajuan berhasil!')),
       );
-      Navigator.pop(context); // Tambahkan baris ini
+      Navigator.pop(context, true); // Tambahkan baris ini
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Gagal mengajukan surat!')),
