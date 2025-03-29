@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sipedes/layanan/tambah_surat.dart';
 import '../data/api_service/test.dart';
 import '../data/model/surat.dart';
+import 'daftar_surat.dart';
 
 class SuratScreen extends StatefulWidget {
   final String idPengguna;
@@ -77,7 +78,7 @@ class _SuratScreenState extends State<SuratScreen> {
         onPressed: () async {
           final result = await Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => TambahSurat()),
+            MaterialPageRoute(builder: (context) => DaftarSurat()),
           );
           if (result == true) {
             _refreshSurat();

@@ -8,8 +8,11 @@ import 'package:sipedes/profile_desa/profile_desa.dart';
 import '../home/home.dart';
 import '../profile/profile.dart';
 
-
 class MenuNavbar extends StatefulWidget {
+  final int initialIndex;
+
+  MenuNavbar({this.initialIndex = 0}); // Default ke indeks 0 (HomeScreen)
+
   @override
   _MenuNavbarState createState() => _MenuNavbarState();
 }
@@ -22,6 +25,7 @@ class _MenuNavbarState extends State<MenuNavbar> {
   void initState() {
     super.initState();
     _loadUserId();
+    _selectedIndex = widget.initialIndex;
   }
 
   Future<void> _loadUserId() async {
@@ -36,7 +40,9 @@ class _MenuNavbarState extends State<MenuNavbar> {
       HomeScreen(),
       ProfileDesa(),
       InformasiDesa(),
-      _idUser != null ? SuratScreen(idPengguna: _idUser.toString()) : Center(child: CircularProgressIndicator()),
+      _idUser != null
+          ? SuratScreen(idPengguna: _idUser.toString())
+          : Center(child: CircularProgressIndicator()),
       KontakForm(),
       ProfilePage(),
     ];
@@ -55,11 +61,14 @@ class _MenuNavbarState extends State<MenuNavbar> {
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.location_city), label: 'Profile Desa'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.location_city), label: 'Profile Desa'),
           BottomNavigationBarItem(icon: Icon(Icons.info), label: 'Informasi Desa'),
           BottomNavigationBarItem(icon: Icon(Icons.public), label: 'Layanan Publik'),
-          BottomNavigationBarItem(icon: Icon(Icons.contact_phone), label: 'Kontak'),
-          BottomNavigationBarItem(icon: Icon(Icons.account_circle), label: 'Profile'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.contact_phone), label: 'Kontak'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.account_circle), label: 'Profile'),
         ],
         currentIndex: _selectedIndex,
         selectedItemColor: AppColor.sukses,
