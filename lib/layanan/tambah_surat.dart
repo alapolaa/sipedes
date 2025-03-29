@@ -1,10 +1,10 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:file_picker/file_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sipedes/navbar/navbar.dart';
+import '../data/api_service/api_service.dart';
 
 class TambahSurat extends StatefulWidget {
   @override
@@ -23,6 +23,7 @@ class _TambahSuratState extends State<TambahSurat> {
 
   String? agama;
   File? filePendukung;
+  ApiService apiService = ApiService();
 
   Future<void> _pickFile() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles();
@@ -46,31 +47,20 @@ class _TambahSuratState extends State<TambahSurat> {
       return;
     }
 
-    var request = http.MultipartRequest(
-      'POST',
-      Uri.parse('http://192.168.20.202/slampang/api/domisili.php'),
+    bool success = await apiService.submitDomisiliForm(
+      idPengguna: idPengguna,
+      namaLengkap: namaController.text,
+      nik: nikController.text,
+      alamat: alamatController.text,
+      agama: agama ?? '',
+      pekerjaan: pekerjaanController.text,
+      keperluan: keperluanController.text,
+      tempatLahir: tempatLahirController.text,
+      tanggalLahir: tanggalLahirController.text,
+      filePendukung: filePendukung,
     );
 
-    request.fields['id_pengguna'] = idPengguna.toString();
-    request.fields['nama_lengkap'] = namaController.text;
-    request.fields['nik'] = nikController.text;
-    request.fields['alamat'] = alamatController.text;
-    request.fields['agama'] = agama ?? '';
-    request.fields['pekerjaan'] = pekerjaanController.text;
-    request.fields['keperluan'] = keperluanController.text;
-    request.fields['tempat_lahir'] = tempatLahirController.text;
-    request.fields['tanggal_lahir'] = tanggalLahirController.text;
-
-    if (filePendukung != null) {
-      request.files.add(
-        await http.MultipartFile.fromPath(
-            'file_pendukung', filePendukung!.path),
-      );
-    }
-
-    var response = await request.send();
-
-    if (response.statusCode == 200) {
+    if (success) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Pengajuan berhasil!')),
       );
@@ -91,7 +81,7 @@ class _TambahSuratState extends State<TambahSurat> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Form Pengajuan Domisili')),
-      body: SingleChildScrollView( // Bungkus Column dengan SingleChildScrollView
+      body: SingleChildScrollView(
         padding: EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,

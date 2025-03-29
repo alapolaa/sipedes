@@ -11,7 +11,7 @@ import '../profile/profile.dart';
 class MenuNavbar extends StatefulWidget {
   final int initialIndex;
 
-  MenuNavbar({this.initialIndex = 0}); // Default ke indeks 0 (HomeScreen)
+  MenuNavbar({this.initialIndex = 0});
 
   @override
   _MenuNavbarState createState() => _MenuNavbarState();

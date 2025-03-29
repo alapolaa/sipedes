@@ -10,8 +10,11 @@ import '../model/pengumuman.dart';
 import '../model/potensi_desa.dart';
 import '../model/sejarah.dart';
 import '../model/struktur.dart';
+import '../model/surat.dart';
 import '../model/umkm.dart';
 import '../model/visi_misi.dart';
+import 'dart:io';
+
 
 class ApiService {
   static const String baseUrl = "http://192.168.20.202/slampang";
@@ -235,5 +238,81 @@ class ApiService {
       print('Error fetching profile: $e');
       return null;
     }
+  }
+  // Kirim formulir pengajuan surat domisili
+  Future<bool> submitDomisiliForm(
+      {required int idPengguna,
+        required String namaLengkap,
+        required String nik,
+        required String alamat,
+        required String agama,
+        required String pekerjaan,
+        required String keperluan,
+        required String tempatLahir,
+        required String tanggalLahir,
+        File? filePendukung}) async {
+    var request = http.MultipartRequest(
+      'POST',
+      Uri.parse("$baseUrl/api/domisili.php"),
+    );
+
+    request.fields['id_pengguna'] = idPengguna.toString();
+    request.fields['nama_lengkap'] = namaLengkap;
+    request.fields['nik'] = nik;
+    request.fields['alamat'] = alamat;
+    request.fields['agama'] = agama;
+    request.fields['pekerjaan'] = pekerjaan;
+    request.fields['keperluan'] = keperluan;
+    request.fields['tempat_lahir'] = tempatLahir;
+    request.fields['tanggal_lahir'] = tanggalLahir;
+
+    if (filePendukung != null) {
+      request.files.add(
+        await http.MultipartFile.fromPath(
+            'file_pendukung', filePendukung.path),
+      );
+    }
+
+    var response = await request.send();
+
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  // Ambil data surat berdasarkan ID pengguna
+  Future<List<Surat>> fetchSuratByUserId(String idPengguna) async {
+    final String url = "$baseUrl/api/layanan_publik/surat.php?id_pengguna=$idPengguna";
+
+    final response = await http.post(Uri.parse(url));
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      if (data['status'] == 'success') {
+        List<dynamic> suratList = data['pengajuan_surat'];
+        return suratList.map((json) => Surat.fromJson(json)).toList();
+      } else {
+        throw Exception("Gagal mengambil data");
+      }
+    } else {
+      throw Exception("Gagal terhubung ke server");
+    }
+  }
+  // Kirim pesan kontak
+  Future<Map<String, dynamic>> kirimPesan(String name, String email, String subjek, String message) async {
+    final url = Uri.parse("$baseUrl/api/kontak/kontak.php");
+    final response = await http.post(
+      url,
+      body: {
+        'name': name,
+        'email': email,
+        'subjeck': subjek,
+        'message': message,
+      },
+    );
+
+    final responseData = json.decode(response.body);
+    return responseData;
   }
 }

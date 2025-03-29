@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:http/http.dart' as http;
 import 'package:sipedes/data/extension/extension.dart';
 import 'package:sipedes/data/theme/theme.dart';
-import 'dart:convert';
+import '../data/api_service/api_service.dart';
 import '../footer.dart';
 import 'notif.dart';
+
 
 class KontakForm extends StatefulWidget {
   @override
@@ -20,6 +20,7 @@ class _KontakFormState extends State<KontakForm> {
   final _messageController = TextEditingController();
   bool _isLoading = false;
   String _responseMessage = '';
+  final ApiService _apiService = ApiService();
 
   Future<void> _kirimPesan() async {
     if (_formKey.currentState!.validate()) {
@@ -28,27 +29,20 @@ class _KontakFormState extends State<KontakForm> {
         _responseMessage = '';
       });
 
-      final url =
-      Uri.parse('http://192.168.20.202/slampang/api/kontak/kontak.php');
       try {
-        final response = await http.post(
-          url,
-          body: {
-            'name': _nameController.text,
-            'email': _emailController.text,
-            'subjeck': _subjekController.text,
-            'message': _messageController.text,
-          },
+        final responseData = await _apiService.kirimPesan(
+          _nameController.text,
+          _emailController.text,
+          _subjekController.text,
+          _messageController.text,
         );
-
-        final responseData = json.decode(response.body);
 
         setState(() {
           _isLoading = false;
           _responseMessage = responseData['message'];
         });
 
-        if (response.statusCode == 201) {
+        if (responseData['status'] == 'success') {
           _showSuccessDialog(context, responseData['message']);
         } else {
           _showErrorDialog(context, responseData['message']);
