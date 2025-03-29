@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
                   return SplashScreen();
                 }
                 if (result) {
-                  return MenuNavbar();
+                  return LoginPage();
                 } else {
                   return LoginPage();
                 }
