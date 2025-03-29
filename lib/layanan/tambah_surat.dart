@@ -77,7 +77,7 @@ class _TambahSuratState extends State<TambahSurat> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => MenuNavbar(initialIndex: 3), // Perubahan disini
+          builder: (context) => MenuNavbar(initialIndex: 3),
         ),
       );
     } else {
@@ -91,7 +91,7 @@ class _TambahSuratState extends State<TambahSurat> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Form Pengajuan Domisili')),
-      body: Padding(
+      body: SingleChildScrollView( // Bungkus Column dengan SingleChildScrollView
         padding: EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
