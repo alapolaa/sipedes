@@ -6,12 +6,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sipedes/navbar/navbar.dart';
 import '../data/api_service/api_service.dart';
 
-class TambahSurat extends StatefulWidget {
+class Sktm extends StatefulWidget {
   @override
-  _TambahSuratState createState() => _TambahSuratState();
+  _SktmState createState() => _SktmState();
 }
 
-class _TambahSuratState extends State<TambahSurat> {
+class _SktmState extends State<Sktm> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController namaController = TextEditingController();
   TextEditingController nikController = TextEditingController();
@@ -47,7 +47,7 @@ class _TambahSuratState extends State<TambahSurat> {
       return;
     }
 
-    bool success = await apiService.submitDomisiliForm(
+    bool success = await apiService.submitSktmForm(
       idPengguna: idPengguna,
       namaLengkap: namaController.text,
       nik: nikController.text,
@@ -62,7 +62,7 @@ class _TambahSuratState extends State<TambahSurat> {
 
     if (success) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Pengajuan berhasil!')),
+        SnackBar(content: Text('Pengajuan SKTM berhasil!')),
       );
       Navigator.push(
         context,
@@ -72,7 +72,7 @@ class _TambahSuratState extends State<TambahSurat> {
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Gagal mengajukan surat!')),
+        SnackBar(content: Text('Gagal mengajukan SKTM!')),
       );
     }
   }
@@ -80,7 +80,7 @@ class _TambahSuratState extends State<TambahSurat> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Form Pengajuan Domisili')),
+      appBar: AppBar(title: Text('Form Pengajuan SKTM')),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16.0),
         child: Form(

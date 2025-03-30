@@ -315,4 +315,194 @@ class ApiService {
     final responseData = json.decode(response.body);
     return responseData;
   }
+
+  // Kirim formulir pengajuan surat SKTM
+  Future<bool> submitSktmForm(
+      {required int idPengguna,
+        required String namaLengkap,
+        required String nik,
+        required String alamat,
+        required String agama,
+        required String pekerjaan,
+        required String keperluan,
+        required String tempatLahir,
+        required String tanggalLahir,
+        File? filePendukung}) async {
+    var request = http.MultipartRequest(
+      'POST',
+      Uri.parse("$baseUrl/api/sktm.php"), // Sesuaikan dengan nama file API SKTM Anda
+    );
+
+    request.fields['id_pengguna'] = idPengguna.toString();
+    request.fields['nama_lengkap'] = namaLengkap;
+    request.fields['nik'] = nik;
+    request.fields['alamat'] = alamat;
+    request.fields['agama'] = agama;
+    request.fields['pekerjaan'] = pekerjaan;
+    request.fields['keperluan'] = keperluan;
+    request.fields['tempat_lahir'] = tempatLahir;
+    request.fields['tanggal_lahir'] = tanggalLahir;
+
+    if (filePendukung != null) {
+      request.files.add(
+        await http.MultipartFile.fromPath('file_pendukung', filePendukung.path),
+      );
+    }
+
+    var response = await request.send();
+
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  // Kirim formulir pengajuan surat usaha
+  Future<bool> submitUsahaForm(
+      {required int idPengguna,
+        required String namaLengkap,
+        required String nik,
+        required String alamat,
+        required String agama,
+        required String pekerjaan,
+        required String keperluan,
+        required String tempatLahir,
+        required String tanggalLahir,
+        required String jenisUsaha,
+        File? filePendukung}) async {
+    var request = http.MultipartRequest(
+      'POST',
+      Uri.parse("$baseUrl/api/usaha.php"), // Sesuaikan dengan nama file API usaha Anda
+    );
+
+    request.fields['id_pengguna'] = idPengguna.toString();
+    request.fields['nama_lengkap'] = namaLengkap;
+    request.fields['nik'] = nik;
+    request.fields['alamat'] = alamat;
+    request.fields['agama'] = agama;
+    request.fields['pekerjaan'] = pekerjaan;
+    request.fields['keperluan'] = keperluan;
+    request.fields['tempat_lahir'] = tempatLahir;
+    request.fields['tanggal_lahir'] = tanggalLahir;
+    request.fields['jenis_usaha'] = jenisUsaha;
+
+    if (filePendukung != null) {
+      request.files.add(
+        await http.MultipartFile.fromPath('file_pendukung', filePendukung.path),
+      );
+    }
+
+    var response = await request.send();
+
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  // Kirim formulir pengajuan surat keterangan belum menikah
+  Future<bool> submitBelumMenikahForm(
+      {required int idPengguna,
+        required String namaLengkap,
+        required String nik,
+        required String alamat,
+        required String agama,
+        required String pekerjaan,
+        required String keperluan,
+        required String tempatLahir,
+        required String tanggalLahir,
+        required String statusPernikahan,
+        File? filePendukung}) async {
+    var request = http.MultipartRequest(
+      'POST',
+      Uri.parse("$baseUrl/api/nikah.php"), // Sesuaikan dengan nama file API belum menikah Anda
+    );
+
+    request.fields['id_pengguna'] = idPengguna.toString();
+    request.fields['nama_lengkap'] = namaLengkap;
+    request.fields['nik'] = nik;
+    request.fields['alamat'] = alamat;
+    request.fields['agama'] = agama;
+    request.fields['pekerjaan'] = pekerjaan;
+    request.fields['keperluan'] = keperluan;
+    request.fields['tempat_lahir'] = tempatLahir;
+    request.fields['tanggal_lahir'] = tanggalLahir;
+    request.fields['status_pernikahan'] = statusPernikahan;
+
+    if (filePendukung != null) {
+      request.files.add(
+        await http.MultipartFile.fromPath('file_pendukung', filePendukung.path),
+      );
+    }
+
+    var response = await request.send();
+
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+
+  // Kirim formulir pengajuan surat tanah
+  Future<http.Response> submitTanahForm(
+      {required int idPengguna,
+        required String namaLengkap,
+        required String nik,
+        required String alamat,
+        required String agama,
+        required String pekerjaan,
+        required String keperluan,
+        required String tempatLahir,
+        required String tanggalLahir,
+        required String statusTanah,
+        required String luasTanah,
+        required String letakTanah,
+        required String statusKepemilikan,
+        required String batasUtara,
+        required String batasSelatan,
+        required String batasTimur,
+        required String batasBarat,
+        File? filePendukung,
+        File? buktiKepemilikan}) async {
+    var request = http.MultipartRequest(
+      'POST',
+      Uri.parse("$baseUrl/api/tanah.php"), // Sesuaikan URL API
+    );
+
+    request.fields['id_pengguna'] = idPengguna.toString();
+    request.fields['nama_lengkap'] = namaLengkap;
+    request.fields['nik'] = nik;
+    request.fields['alamat'] = alamat;
+    request.fields['agama'] = agama;
+    request.fields['pekerjaan'] = pekerjaan;
+    request.fields['keperluan'] = keperluan;
+    request.fields['tempat_lahir'] = tempatLahir;
+    request.fields['tanggal_lahir'] = tanggalLahir;
+    request.fields['status_tanah'] = statusTanah;
+    request.fields['luas_tanah'] = luasTanah;
+    request.fields['letak_tanah'] = letakTanah;
+    request.fields['status_kepemilikan'] = statusKepemilikan;
+    request.fields['batas_utara'] = batasUtara;
+    request.fields['batas_selatan'] = batasSelatan;
+    request.fields['batas_timur'] = batasTimur;
+    request.fields['batas_barat'] = batasBarat;
+
+    if (filePendukung != null) {
+      request.files.add(
+        await http.MultipartFile.fromPath('file_pendukung', filePendukung.path),
+      );
+    }
+
+    if (buktiKepemilikan != null) {
+      request.files.add(
+        await http.MultipartFile.fromPath('bukti_kepemilikan', buktiKepemilikan.path),
+      );
+    }
+
+    var response = await request.send();
+    return http.Response.fromStream(response); // Mengembalikan http.Response
+  }
 }
