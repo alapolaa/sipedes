@@ -60,7 +60,9 @@ class _TanahState extends State<Tanah> {
 
     if (idPengguna == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('ID Pengguna tidak ditemukan. Silakan login kembali.')),
+        SnackBar(
+            content:
+                Text('ID Pengguna tidak ditemukan. Silakan login kembali.')),
       );
       return;
     }
@@ -143,11 +145,12 @@ class _TanahState extends State<Tanah> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               _buildTextField(namaController, 'Nama Lengkap'),
-             SizedBox(height: 12.h),
-              _buildTextField(nikController, 'NIK', keyboardType: TextInputType.number),
-             SizedBox(height: 12.h),
+              SizedBox(height: 12.h),
+              _buildTextField(nikController, 'NIK',
+                  keyboardType: TextInputType.number),
+              SizedBox(height: 12.h),
               _buildTextField(alamatController, 'Alamat'),
-             SizedBox(height: 12.h),
+              SizedBox(height: 12.h),
               DropdownButtonFormField<String>(
                 value: agama,
                 items: ['Islam', 'Kristen', 'Hindu', 'Budha']
@@ -159,11 +162,11 @@ class _TanahState extends State<Tanah> {
                   border: OutlineInputBorder(),
                 ),
               ),
-             SizedBox(height: 12.h),
+              SizedBox(height: 12.h),
               _buildTextField(pekerjaanController, 'Pekerjaan'),
-             SizedBox(height: 12.h),
+              SizedBox(height: 12.h),
               _buildTextField(keperluanController, 'Keperluan'),
-             SizedBox(height: 12.h),
+              SizedBox(height: 12.h),
               TextFormField(
                 controller: tanggalLahirController,
                 decoration: InputDecoration(
@@ -185,23 +188,31 @@ class _TanahState extends State<Tanah> {
                   }
                 },
               ),
-             SizedBox(height: 12.h),
+              SizedBox(height: 12.h),
               _buildTextField(tempatLahirController, 'Tempat Lahir'),
-             SizedBox(height: 12.h),
+              SizedBox(height: 12.h),
               _buildTextField(statusTanahController, 'Status Tanah'),
-             SizedBox(height: 12.h),
-              _buildTextField(luasTanahController, 'Luas Tanah'),
-             SizedBox(height: 12.h),
+              SizedBox(height: 12.h),
+              TextFormField(
+                controller: luasTanahController,
+                decoration: InputDecoration(
+                  labelText: 'Luas Tanah',
+                  border: OutlineInputBorder(),
+                ),
+                keyboardType: TextInputType.number, // Perubahan di sini
+              ),
+              SizedBox(height: 12.h),
               _buildTextField(letakTanahController, 'Letak Tanah'),
-             SizedBox(height: 12.h),
-              _buildTextField(statusKepemilikanController, 'Status Kepemilikan'),
-             SizedBox(height: 12.h),
+              SizedBox(height: 12.h),
+              _buildTextField(
+                  statusKepemilikanController, 'Status Kepemilikan'),
+              SizedBox(height: 12.h),
               _buildTextField(batasUtaraController, 'Batas Utara'),
-             SizedBox(height: 12.h),
+              SizedBox(height: 12.h),
               _buildTextField(batasSelatanController, 'Batas Selatan'),
-             SizedBox(height: 12.h),
+              SizedBox(height: 12.h),
               _buildTextField(batasTimurController, 'Batas Timur'),
-             SizedBox(height: 12.h),
+              SizedBox(height: 12.h),
               _buildTextField(batasBaratController, 'Batas Barat'),
               SizedBox(height: 20),
               ElevatedButton.icon(
@@ -212,11 +223,11 @@ class _TanahState extends State<Tanah> {
                   backgroundColor: AppColor.abu2,
                   padding: EdgeInsets.symmetric(vertical: 15.h),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5.r), // Ubah radius menjadi 10
+                    borderRadius: BorderRadius.circular(5.r),
                   ),
                 ),
               ),
-             SizedBox(height: 12.h),
+              SizedBox(height: 12.h),
               ElevatedButton.icon(
                 onPressed: () => _pickFile('bukti_kepemilikan'),
                 icon: Icon(Icons.attach_file),
@@ -225,19 +236,20 @@ class _TanahState extends State<Tanah> {
                   backgroundColor: AppColor.abu2,
                   padding: EdgeInsets.symmetric(vertical: 15.h),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5.r), // Ubah radius menjadi 10
+                    borderRadius: BorderRadius.circular(5.r),
                   ),
                 ),
               ),
               SizedBox(height: 20.h),
               ElevatedButton(
                 onPressed: _submitForm,
-                child: Text('Kirim', style: TextStyle(fontSize: 20.sp,color: AppColor.white)),
+                child: Text('Kirim',
+                    style: TextStyle(fontSize: 20.sp, color: AppColor.white)),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColor.appbar,
                   padding: EdgeInsets.symmetric(vertical: 15.h),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5.r), // Ubah radius menjadi 10
+                    borderRadius: BorderRadius.circular(5.r),
                   ),
                 ),
               ),
@@ -248,7 +260,8 @@ class _TanahState extends State<Tanah> {
     );
   }
 
-  Widget _buildTextField(TextEditingController controller, String label, {TextInputType? keyboardType}) {
+  Widget _buildTextField(TextEditingController controller, String label,
+      {TextInputType? keyboardType}) {
     return TextFormField(
       controller: controller,
       decoration: InputDecoration(

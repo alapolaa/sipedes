@@ -165,11 +165,11 @@ class _KontakFormState extends State<KontakForm> {
                             ? CircularProgressIndicator()
                             : Text(
                           'Kirim Pesan',
-                          style: AppFont.empatbelas
+                          style: AppFont.nambelasbold
                               .copyWith(color: AppColor.white),
                         ),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColor.sukses,
+                          backgroundColor: AppColor.appbar,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10.sp),
                           ),
