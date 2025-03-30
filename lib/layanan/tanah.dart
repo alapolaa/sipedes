@@ -2,8 +2,10 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sipedes/data/theme/theme.dart';
 import 'package:sipedes/navbar/navbar.dart';
 import '../data/api_service/api_service.dart';
 
@@ -122,40 +124,53 @@ class _TanahState extends State<Tanah> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Form Pengajuan Surat Tanah')),
+      appBar: AppBar(
+        backgroundColor: AppColor.appbar,
+        title: Text(
+          'Pengajuan Surat Tanah',
+          style: AppFont.duaempat.copyWith(color: AppColor.white),
+        ),
+        centerTitle: true,
+        iconTheme: IconThemeData(
+          color: Colors.white,
+        ),
+      ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(20.0),
         child: Form(
           key: _formKey,
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              TextFormField(
-                  controller: namaController,
-                  decoration: InputDecoration(labelText: 'Nama Lengkap')),
-              TextFormField(
-                  controller: nikController,
-                  decoration: InputDecoration(labelText: 'NIK'),
-                  keyboardType: TextInputType.number),
-              TextFormField(
-                  controller: alamatController,
-                  decoration: InputDecoration(labelText: 'Alamat')),
+              _buildTextField(namaController, 'Nama Lengkap'),
+             SizedBox(height: 12.h),
+              _buildTextField(nikController, 'NIK', keyboardType: TextInputType.number),
+             SizedBox(height: 12.h),
+              _buildTextField(alamatController, 'Alamat'),
+             SizedBox(height: 12.h),
               DropdownButtonFormField<String>(
                 value: agama,
                 items: ['Islam', 'Kristen', 'Hindu', 'Budha']
                     .map((e) => DropdownMenuItem(value: e, child: Text(e)))
                     .toList(),
                 onChanged: (val) => setState(() => agama = val),
-                decoration: InputDecoration(labelText: 'Agama'),
+                decoration: InputDecoration(
+                  labelText: 'Agama',
+                  border: OutlineInputBorder(),
+                ),
               ),
-              TextFormField(
-                  controller: pekerjaanController,
-                  decoration: InputDecoration(labelText: 'Pekerjaan')),
-              TextFormField(
-                  controller: keperluanController,
-                  decoration: InputDecoration(labelText: 'Keperluan')),
+             SizedBox(height: 12.h),
+              _buildTextField(pekerjaanController, 'Pekerjaan'),
+             SizedBox(height: 12.h),
+              _buildTextField(keperluanController, 'Keperluan'),
+             SizedBox(height: 12.h),
               TextFormField(
                 controller: tanggalLahirController,
-                decoration: InputDecoration(labelText: 'Tanggal Lahir'),
+                decoration: InputDecoration(
+                  labelText: 'Tanggal Lahir',
+                  border: OutlineInputBorder(),
+                  suffixIcon: Icon(Icons.calendar_today),
+                ),
                 readOnly: true,
                 onTap: () async {
                   DateTime? picked = await showDatePicker(
@@ -170,45 +185,77 @@ class _TanahState extends State<Tanah> {
                   }
                 },
               ),
-              TextFormField(
-                  controller: tempatLahirController,
-                  decoration: InputDecoration(labelText: 'Tempat Lahir')),
-              TextFormField(
-                  controller: statusTanahController,
-                  decoration: InputDecoration(labelText: 'Status Tanah')),
-              TextFormField(
-                  controller: luasTanahController,
-                  decoration: InputDecoration(labelText: 'Luas Tanah')),
-              TextFormField(
-                  controller: letakTanahController,
-                  decoration: InputDecoration(labelText: 'Letak Tanah')),
-              TextFormField(
-                  controller: statusKepemilikanController,
-                  decoration: InputDecoration(labelText: 'Status Kepemilikan')),
-              TextFormField(
-                  controller: batasUtaraController,
-                  decoration: InputDecoration(labelText: 'Batas Utara')),
-              TextFormField(
-                  controller: batasSelatanController,
-                  decoration: InputDecoration(labelText: 'Batas Selatan')),
-              TextFormField(
-                  controller: batasTimurController,
-                  decoration: InputDecoration(labelText: 'Batas Timur')),
-              TextFormField(
-                  controller: batasBaratController,
-                  decoration: InputDecoration(labelText: 'Batas Barat')),
+             SizedBox(height: 12.h),
+              _buildTextField(tempatLahirController, 'Tempat Lahir'),
+             SizedBox(height: 12.h),
+              _buildTextField(statusTanahController, 'Status Tanah'),
+             SizedBox(height: 12.h),
+              _buildTextField(luasTanahController, 'Luas Tanah'),
+             SizedBox(height: 12.h),
+              _buildTextField(letakTanahController, 'Letak Tanah'),
+             SizedBox(height: 12.h),
+              _buildTextField(statusKepemilikanController, 'Status Kepemilikan'),
+             SizedBox(height: 12.h),
+              _buildTextField(batasUtaraController, 'Batas Utara'),
+             SizedBox(height: 12.h),
+              _buildTextField(batasSelatanController, 'Batas Selatan'),
+             SizedBox(height: 12.h),
+              _buildTextField(batasTimurController, 'Batas Timur'),
+             SizedBox(height: 12.h),
+              _buildTextField(batasBaratController, 'Batas Barat'),
+              SizedBox(height: 20),
+              ElevatedButton.icon(
+                onPressed: () => _pickFile('file_pendukung'),
+                icon: Icon(Icons.attach_file),
+                label: Text('Pilih File Pendukung KTP / KK'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColor.abu2,
+                  padding: EdgeInsets.symmetric(vertical: 15.h),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5.r), // Ubah radius menjadi 10
+                  ),
+                ),
+              ),
+             SizedBox(height: 12.h),
+              ElevatedButton.icon(
+                onPressed: () => _pickFile('bukti_kepemilikan'),
+                icon: Icon(Icons.attach_file),
+                label: Text('Upload Bukti Kepemilikan'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColor.abu2,
+                  padding: EdgeInsets.symmetric(vertical: 15.h),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5.r), // Ubah radius menjadi 10
+                  ),
+                ),
+              ),
+              SizedBox(height: 20.h),
               ElevatedButton(
-                  onPressed: () => _pickFile('file_pendukung'),
-                  child: Text('Pilih File Pendukung')),
-              ElevatedButton(
-                  onPressed: () => _pickFile('bukti_kepemilikan'),
-                  child: Text('Pilih Bukti Kepemilikan')),
-              SizedBox(height: 16),
-              ElevatedButton(onPressed: _submitForm, child: Text('Submit')),
+                onPressed: _submitForm,
+                child: Text('Kirim', style: TextStyle(fontSize: 20.sp,color: AppColor.white)),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColor.appbar,
+                  padding: EdgeInsets.symmetric(vertical: 15.h),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5.r), // Ubah radius menjadi 10
+                  ),
+                ),
+              ),
             ],
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildTextField(TextEditingController controller, String label, {TextInputType? keyboardType}) {
+    return TextFormField(
+      controller: controller,
+      decoration: InputDecoration(
+        labelText: label,
+        border: OutlineInputBorder(),
+      ),
+      keyboardType: keyboardType,
     );
   }
 }
