@@ -46,7 +46,6 @@ class _SuratScreenState extends State<SuratScreen> {
       return Colors.green[100]!;
     } else if (status == 'Siap Diambil') {
       return Colors.yellow[100]!;
-
     } else if (status == 'Ditolak') {
       return Colors.red[100]!;
     } else {
