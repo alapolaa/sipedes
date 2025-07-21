@@ -119,11 +119,15 @@ class _LoginPageState extends State<LoginPage> {
                   controller: nikController,
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(
-                    labelText: "NIK",
+                    labelText: "Email",
                     labelStyle:
                     TextStyle(fontSize: 16.sp, fontStyle: FontStyle.italic),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0.r),
+                    ),
+                    suffixIcon: IconButton(
+                      icon: Icon(Icons.email, size: 22.sp),
+                      onPressed: () => _selectDate(context),
                     ),
                   ),
                   style: TextStyle(fontSize: 18.0.sp),
@@ -135,14 +139,14 @@ class _LoginPageState extends State<LoginPage> {
                   controller: tanggalLahirController,
                   readOnly: true,
                   decoration: InputDecoration(
-                    labelText: "Tanggal Lahir (Tahun-Bulan-Tanggal)",
+                    labelText: "Password",
                     labelStyle:
                     TextStyle(fontSize: 16.sp, fontStyle: FontStyle.italic),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0.r),
                     ),
                     suffixIcon: IconButton(
-                      icon: Icon(Icons.calendar_today, size: 22.sp),
+                      icon: Icon(Icons.remove_red_eye_rounded, size: 22.sp),
                       onPressed: () => _selectDate(context),
                     ),
                   ),

@@ -17,7 +17,8 @@ import 'dart:io';
 
 
 class ApiService {
-  static const String baseUrl = "http://192.168.20.202/slampang";
+
+  static const String baseUrl = "http://192.168.149.202/slampang";
   static const String baseImageUrl = "$baseUrl/uploads";
 
   // Ambil data banner

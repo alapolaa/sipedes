@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return SplashScreen();
               } else if (snapshot.hasError) {
-                return LoginPage();
+                return SplashScreen();
               } else {
                 bool result = snapshot.data ?? false;
                 if (result == null){
